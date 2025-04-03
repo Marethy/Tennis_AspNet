@@ -1,4 +1,4 @@
-﻿namespace FoodWebMVC.Models;
+﻿namespace Tennis.Models;
 
 public class Table
 {

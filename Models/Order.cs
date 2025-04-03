@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace FoodWebMVC.Models;
+namespace Tennis.Models;
 
 public class Order
 {

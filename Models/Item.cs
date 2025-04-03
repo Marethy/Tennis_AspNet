@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace FoodWebMVC.Models;
+namespace Tennis.Models;
 
 public class Item
 {

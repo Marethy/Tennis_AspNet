@@ -1,10 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Tennis.Models;
 
-namespace FoodWebMVC.Models;
+namespace Tennis.Models;
 
-public class FoodWebMVCDbContext : DbContext
+public class TennisWebMVCContext : DbContext
 {
-	public FoodWebMVCDbContext(DbContextOptions<FoodWebMVCDbContext> options) : base(options)
+	public TennisWebMVCContext(DbContextOptions<TennisWebMVCContext> options) : base(options)
 	{
 	}
 
