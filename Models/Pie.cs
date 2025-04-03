@@ -1,4 +1,4 @@
-﻿namespace Tennis.Models;
+﻿namespace FoodWebMVC.Models;
 
 public class Pie
 {

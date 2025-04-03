@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Tennis.Models;
+namespace FoodWebMVC.Models;
 
 public class Token
 {
