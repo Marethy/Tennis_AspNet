@@ -1,11 +1,14 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿
 using Tennis.Models;
+using Microsoft.EntityFrameworkCore; 
+
+
 
 namespace Tennis.Models;
 
-public class TennisWebMVCContext : DbContext
+public class TennisDbContext : DbContext
 {
-	public TennisWebMVCContext(DbContextOptions<TennisWebMVCContext> options) : base(options)
+	public TennisDbContext(DbContextOptions<TennisDbContext> options) : base(options)
 	{
 	}
 

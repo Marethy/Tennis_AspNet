@@ -1,8 +1,8 @@
-﻿using FoodWebMVC.Interfaces;
-using FoodWebMVC.Models;
+﻿using Tennis.Interfaces;
+using Tennis.Models;
 using Newtonsoft.Json;
 
-namespace FoodWebMVC.Repositories;
+namespace Tennis.Repositories;
 
 public class CartRepository : ICartRepository
 {

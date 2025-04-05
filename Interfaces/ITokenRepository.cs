@@ -1,4 +1,4 @@
-﻿namespace FoodWebMVC.Interfaces;
+﻿namespace Tennis.Interfaces;
 
 public interface ITokenRepository
 {

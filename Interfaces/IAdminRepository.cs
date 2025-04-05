@@ -1,5 +1,4 @@
-﻿using Fluent.Infrastructure.FluentModel;
-using Tennis.Models;
+﻿using Tennis.Models;
 
 namespace Tennis.Interfaces;
 

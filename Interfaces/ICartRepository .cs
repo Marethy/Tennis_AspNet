@@ -1,6 +1,6 @@
-﻿using FoodWebMVC.Models;
-
-namespace FoodWebMVC.Interfaces;
+﻿using Tennis.Models;
+	
+namespace Tennis.Interfaces;
 
 public interface ICartRepository
 {

@@ -1,17 +1,17 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
-using FoodWebMVC.Interfaces;
-using FoodWebMVC.Models;
+using Tennis.Interfaces;
+using Tennis.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace FoodWebMVC.Repositories;
+namespace Tennis.Repositories;
 
 public class AdminRepository : IAdminRepository
 {
-	private readonly FoodWebMVCDbContext _context;
+	private readonly TennisDbContext _context;
 	private readonly IConfiguration _configuration;
 
-	public AdminRepository(FoodWebMVCDbContext context, IConfiguration configuration)
+	public AdminRepository(TennisDbContext context, IConfiguration configuration)
 	{
 		_context = context;
 		_configuration = configuration;

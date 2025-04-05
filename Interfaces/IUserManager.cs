@@ -1,9 +1,9 @@
 ﻿using System.Security.Claims;
-using FoodWebMVC.Models;
+using Tennis.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 
-namespace FoodWebMVC.Interfaces;
+namespace Tennis.Interfaces;
 
 public interface IUserManager
 {
