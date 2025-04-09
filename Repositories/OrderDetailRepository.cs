@@ -1,11 +1,9 @@
-﻿using FoodWebMVC.Interfaces;
-using FoodWebMVC.Models;
+﻿using Tennis.Interfaces;
+using Tennis.Models;
 
-namespace FoodWebMVC.Repositories;
+namespace Tennis.Repositories;
 
-public class OrderDetailRepository : RepositoryBase<OrderDetail>, IOrderDetailRepository
+public class OrderDetailRepository(TennisWebMVCContext context)
+    : RepositoryBase<OrderDetail>(context), IOrderDetailRepository
 {
-	public OrderDetailRepository(FoodWebMVCDbContext context) : base(context)
-	{
-	}
 }

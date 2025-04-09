@@ -1,7 +1,8 @@
-﻿namespace FoodWebMVC.Models;
+﻿namespace Tennis.Models;
 
 public class Table
 {
-	public string Key { get; set; }
-	public int Value { get; set; }
+    public string Key { get; set; }
+
+    public int Value { get; set; }
 }

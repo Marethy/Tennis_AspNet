@@ -1,11 +1,9 @@
-﻿using FoodWebMVC.Interfaces;
-using FoodWebMVC.Models;
+﻿using Tennis.Interfaces;
+using Tennis.Models;
 
-namespace FoodWebMVC.Repositories;
+namespace Tennis.Repositories;
 
-public class BannerRepository : RepositoryBase<Banner>, IBannerRepository
+public class BannerRepository(TennisWebMVCContext context)
+    : RepositoryBase<Banner>(context), IBannerRepository
 {
-	public BannerRepository(FoodWebMVCDbContext context) : base(context)
-	{
-	}
 }

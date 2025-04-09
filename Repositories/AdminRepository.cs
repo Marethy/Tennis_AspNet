@@ -1,151 +1,143 @@
-﻿using System.Security.Cryptography;
+﻿namespace Tennis.Repositories;
+
+using System.Security.Cryptography;
 using System.Text;
-using FoodWebMVC.Interfaces;
-using FoodWebMVC.Models;
 using Microsoft.EntityFrameworkCore;
+using Tennis.Interfaces;
+using Tennis.Models;
 
-namespace FoodWebMVC.Repositories;
-
-public class AdminRepository : IAdminRepository
+public class AdminRepository(TennisWebMVCContext context, IConfiguration configuration)
+    : IAdminRepository
 {
-	private readonly FoodWebMVCDbContext _context;
-	private readonly IConfiguration _configuration;
+    public CookieUserItem Validate(LoginViewModel model)
+    {
+        var userRecords = context.Admins.Where(x => x.AdminUserName == model.UserName);
 
-	public AdminRepository(FoodWebMVCDbContext context, IConfiguration configuration)
-	{
-		_context = context;
-		_configuration = configuration;
-	}
+        var results = userRecords.AsEnumerable()
+            .Where(m => m.AdminPassword == Encode(model.Password))
+            .Select(m => new CookieUserItem
+            {
+                Id = m.AdminId,
+                Email = m.AdminEmail,
+                UserName = m.AdminUserName,
+                Role = "Admin"
+            });
 
-	public CookieUserItem Validate(LoginViewModel model)
-	{
-		var userRecords = _context.Admins.Where(x => x.AdminUserName == model.UserName);
+        return results.FirstOrDefault();
+    }
 
-		var results = userRecords.AsEnumerable()
-			.Where(m => m.AdminPassword == Encode(model.Password))
-			.Select(m => new CookieUserItem
-			{
-				Id = m.AdminId,
-				Email = m.AdminEmail,
-				UserName = m.AdminUserName,
-				Role = "Admin"
-			});
+    public string CreateResetPasswordLink(string adminUserName)
+    {
+        var token = ReturnToken(64);
+        var toKen = new Token(adminUserName, token, DateTime.Now.AddMinutes(2));
+        context.Tokens.Add(toKen);
+        context.SaveChanges();
 
-		return results.FirstOrDefault();
-	}
+        var baseUrl = configuration["AppSettings:BaseUrl"]; // Lấy BaseUrl từ appsettings.json
+        return $"{baseUrl}/Admin/AdmAccount/ResetPassword?user={adminUserName}&token={token}";
+    }
 
-	public string CreateResetPasswordLink(string adminUserName)
-	{
-		var token = ReturnToken(64);
-		var toKen = new Token(adminUserName, token, DateTime.Now.AddMinutes(2));
-		_context.Tokens.Add(toKen);
-		_context.SaveChanges();
+    public async Task<bool> HaveAccount(ForgotViewModel model)
+    {
+        return await context.Admins.AnyAsync(x => x.AdminUserName == model.UserName && x.AdminEmail == model.Email);
+    }
 
-		var baseUrl = _configuration["AppSettings:BaseUrl"]; // Lấy BaseUrl từ appsettings.json
-		return $"{baseUrl}/Admin/AdmAccount/ResetPassword?user={adminUserName}&token={token}";
-	}
+    public async Task<bool> HaveAccount(string userName, string password)
+    {
+        return await context.Admins.AnyAsync(_context =>
+            _context.AdminUserName == userName && _context.AdminPassword == Encode(password));
+    }
 
-	public async Task<bool> HaveAccount(ForgotViewModel model)
-	{
-		return await _context.Admins.AnyAsync(x => x.AdminUserName == model.UserName && x.AdminEmail == model.Email);
-	}
+    public async Task ResetPassWord(ResetViewModel model)
+    {
+        var Admin = GetAdmin(model.UserName);
+        Admin.AdminPassword = Encode(model.Password);
+        await context.SaveChangesAsync();
+    }
 
-	public async Task<bool> HaveAccount(string userName, string password)
-	{
-		return await _context.Admins.AnyAsync(_context =>
-			_context.AdminUserName == userName && _context.AdminPassword == Encode(password));
-	}
+    public async Task ChangePasswordUser(ChangePasswordViewModel model, int id)
+    {
+        var user = GetAdmin(id);
+        user.AdminPassword = Encode(model.NewPassword);
+        await context.SaveChangesAsync();
+    }
 
-	public async Task ResetPassWord(ResetViewModel model)
-	{
-		var Admin = GetAdmin(model.UserName);
-		Admin.AdminPassword = Encode(model.Password);
-		await _context.SaveChangesAsync();
-	}
+    private string Encode(string originalPassword)
+    {
+        using var md5 = MD5.Create();
+        var originalBytes = Encoding.Default.GetBytes(originalPassword);
+        var encodedBytes = md5.ComputeHash(originalBytes);
 
-	public async Task ChangePasswordUser(ChangePasswordViewModel model, int id)
-	{
-		var user = GetAdmin(id);
-		user.AdminPassword = Encode(model.NewPassword);
-		await _context.SaveChangesAsync();
-	}
+        return BitConverter.ToString(encodedBytes);
+    }
 
-	private string Encode(string originalPassword)
-	{
-		var md5 = MD5.Create();
-		var originalBytes = ASCIIEncoding.Default.GetBytes(originalPassword);
-		var encodedBytes = md5.ComputeHash(originalBytes);
+    private string ReturnToken(int length,
+        string allowedChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789")
+    {
+        if (length < 0) throw new ArgumentOutOfRangeException("length", "length cannot be less than zero.");
+        if (string.IsNullOrEmpty(allowedChars)) throw new ArgumentException("allowedChars may not be empty.");
 
-		return BitConverter.ToString(encodedBytes);
-	}
+        const int byteSize = 0x100;
+        var allowedCharSet = new HashSet<char>(allowedChars).ToArray();
+        if (byteSize < allowedCharSet.Length)
+            throw new ArgumentException(
+                string.Format("allowedChars may contain no more than {0} characters.", byteSize));
 
-	private string ReturnToken(int length,
-		string allowedChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789")
-	{
-		if (length < 0) throw new ArgumentOutOfRangeException("length", "length cannot be less than zero.");
-		if (string.IsNullOrEmpty(allowedChars)) throw new ArgumentException("allowedChars may not be empty.");
+        // Guid.NewGuid and System.Random are not particularly random. By using a
+        // cryptographically-secure random number generator, the caller is always
+        // protected, regardless of use.
+        using (var rng = RandomNumberGenerator.Create())
+        {
+            var result = new StringBuilder();
+            var buf = new byte[128];
+            while (result.Length < length)
+            {
+                rng.GetBytes(buf);
+                for (var i = 0; i < buf.Length && result.Length < length; ++i)
+                {
+                    // Divide the byte into allowedCharSet-sized groups. If the
+                    // random value falls into the last group and the last group is
+                    // too small to choose from the entire allowedCharSet, ignore
+                    // the value in order to avoid biasing the result.
+                    var outOfRangeStart = byteSize - byteSize % allowedCharSet.Length;
+                    if (outOfRangeStart <= buf[i]) continue;
+                    result.Append(allowedCharSet[buf[i] % allowedCharSet.Length]);
+                }
+            }
 
-		const int byteSize = 0x100;
-		var allowedCharSet = new HashSet<char>(allowedChars).ToArray();
-		if (byteSize < allowedCharSet.Length)
-			throw new ArgumentException(
-				string.Format("allowedChars may contain no more than {0} characters.", byteSize));
+            return result.ToString();
+        }
+    }
 
-		// Guid.NewGuid and System.Random are not particularly random. By using a
-		// cryptographically-secure random number generator, the caller is always
-		// protected, regardless of use.
-		using (var rng = RandomNumberGenerator.Create())
-		{
-			var result = new StringBuilder();
-			var buf = new byte[128];
-			while (result.Length < length)
-			{
-				rng.GetBytes(buf);
-				for (var i = 0; i < buf.Length && result.Length < length; ++i)
-				{
-					// Divide the byte into allowedCharSet-sized groups. If the
-					// random value falls into the last group and the last group is
-					// too small to choose from the entire allowedCharSet, ignore
-					// the value in order to avoid biasing the result.
-					var outOfRangeStart = byteSize - byteSize % allowedCharSet.Length;
-					if (outOfRangeStart <= buf[i]) continue;
-					result.Append(allowedCharSet[buf[i] % allowedCharSet.Length]);
-				}
-			}
+    private Admin GetAdmin(int id)
+    {
+        return context.Admins.Find(id);
+    }
 
-			return result.ToString();
-		}
-	}
+    private Admin GetAdmin(string userName)
+    {
+        return context.Admins.FirstOrDefault(user => user.AdminUserName == userName);
+    }
 
-	private Admin GetAdmin(int id)
-	{
-		return _context.Admins.Find(id);
-	}
+    public CookieUserItem Register(RegisterViewModel model)
+    {
+        var user = new Admin
+        {
+            AdminUserName = model.UserName,
+            AdminPassword = Encode(model.Password),
+            AdminEmail = model.Email,
+            AdminImage = "avatar.jpg",
+            AdminDateCreated = DateTime.Now
+        };
+        context.Admins.Add(user);
+        context.SaveChanges();
 
-	private Admin GetAdmin(string userName)
-	{
-		return _context.Admins.FirstOrDefault(user => user.AdminUserName == userName);
-	}
-
-	public CookieUserItem Register(RegisterViewModel model)
-	{
-		var user = new Admin
-		{
-			AdminUserName = model.UserName,
-			AdminPassword = Encode(model.Password),
-			AdminEmail = model.Email,
-			AdminImage = "avatar.jpg",
-			AdminDateCreated = DateTime.Now
-		};
-		_context.Admins.Add(user);
-		_context.SaveChanges();
-
-		return new CookieUserItem
-		{
-			Id = user.AdminId,
-			UserName = user.AdminUserName,
-			Email = user.AdminEmail,
-			Role = "Admin"
-		};
-	}
+        return new CookieUserItem
+        {
+            Id = user.AdminId,
+            UserName = user.AdminUserName,
+            Email = user.AdminEmail,
+            Role = "Admin"
+        };
+    }
 }

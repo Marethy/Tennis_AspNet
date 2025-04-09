@@ -1,11 +1,9 @@
-﻿using FoodWebMVC.Interfaces;
-using FoodWebMVC.Models;
+﻿namespace Tennis.Repositories;
 
-namespace FoodWebMVC.Repositories;
+using Tennis.Interfaces;
+using Tennis.Models;
 
-public class FavoriteRepository : RepositoryBase<Favorite>, IFavoriteRepository
+public class FavoriteRepository(TennisWebMVCContext context)
+    : RepositoryBase<Favorite>(context), IFavoriteRepository
 {
-	public FavoriteRepository(FoodWebMVCDbContext context) : base(context)
-	{
-	}
 }

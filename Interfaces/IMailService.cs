@@ -1,9 +1,9 @@
-﻿using FoodWebMVC.Models;
+﻿using Tennis.Models;
 using System.Net.Mail;
 using System.Net;
 using Microsoft.Extensions.Configuration;
 
-namespace FoodWebMVC.Interfaces;
+namespace Tennis.Interfaces;
 
 public interface IMailService
 {

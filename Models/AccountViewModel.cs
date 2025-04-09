@@ -1,7 +1,7 @@
-﻿	using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace FoodWebMVC.Models;
+namespace Tennis.Models;
 
 public class RegisterViewModel
 {

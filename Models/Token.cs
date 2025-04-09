@@ -1,25 +1,21 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace FoodWebMVC.Models;
+namespace Tennis.Models;
 
-public class Token
+public class Token(string customerUserName, string tokenValue, DateTime expiry)
 {
-	public Token(string customerUserName, string tokenValue, DateTime expiry)
-	{
-		CustomerUserName = customerUserName;
-		TokenValue = tokenValue;
-		Expiry = expiry;
-	}
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    [Required]
+    public int TokenID { get; set; }
 
-	[Key]
-	[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-	[Required]
-	public int TokenID { get; set; }
+    [Required]
+    public string CustomerUserName { get; set; } = customerUserName;
 
-	[Required] public string CustomerUserName { get; set; }
+    [Required]
+    public string TokenValue { get; set; } = tokenValue;
 
-	[Required] public string TokenValue { get; set; }
-
-	[Required] public DateTime Expiry { get; set; }
+    [Required]
+    public DateTime Expiry { get; set; } = expiry;
 }

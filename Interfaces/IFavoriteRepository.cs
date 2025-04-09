@@ -1,6 +1,6 @@
-﻿using FoodWebMVC.Models;
+﻿using Tennis.Models;
 
-namespace FoodWebMVC.Interfaces;
+namespace Tennis.Interfaces;
 
 public interface IFavoriteRepository : IRepository<Favorite>
 {

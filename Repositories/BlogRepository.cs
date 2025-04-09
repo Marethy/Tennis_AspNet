@@ -1,11 +1,9 @@
-﻿using FoodWebMVC.Interfaces;
-using FoodWebMVC.Models;
+﻿namespace Tennis.Repositories;
 
-namespace FoodWebMVC.Repositories;
+using Tennis.Interfaces;
+using Tennis.Models;
 
-public class BlogRepository : RepositoryBase<Blog>, IBlogRepository
+public class BlogRepository(TennisWebMVCContext context)
+    : RepositoryBase<Blog>(context), IBlogRepository
 {
-	public BlogRepository(FoodWebMVCDbContext context) : base(context)
-	{
-	}
 }
