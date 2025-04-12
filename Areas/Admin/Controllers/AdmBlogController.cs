@@ -1,16 +1,16 @@
-﻿using FoodWebMVC.Models;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Tennis.Models;
 
-namespace FoodWebMVC.Areas.Admin.Controllers;
+namespace Tennis.Areas.Admin.Controllers;
 
 [Area("Admin")]
 public class AdmBlogController : Controller
 {
 	private readonly IWebHostEnvironment _appEnvironment;
-	private readonly FoodWebMVCDbContext _context;
+	private readonly TennisWebMVCContext _context;
 
-	public AdmBlogController(FoodWebMVCDbContext context, IWebHostEnvironment appEnvironment)
+	public AdmBlogController(TennisWebMVCContext context, IWebHostEnvironment appEnvironment)
 	{
 		_context = context;
 		_appEnvironment = appEnvironment;

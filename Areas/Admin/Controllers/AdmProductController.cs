@@ -1,20 +1,20 @@
 ﻿using System.Security.Claims;
-using FoodWebMVC.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Tennis.Models;
 using X.PagedList;
 using X.PagedList.Extensions;
 
-namespace FoodWebMVC.Areas.Admin.Controllers;
+namespace Tennis.Areas.Admin.Controllers;
 
 [Area("Admin")]
 public class AdmProductController : Controller
 {
 	private readonly IWebHostEnvironment _appEnvironment;
-	private readonly FoodWebMVCDbContext _context;
+	private readonly TennisWebMVCContext _context;
 
-	public AdmProductController(FoodWebMVCDbContext context, IWebHostEnvironment appEnvironment)
+	public AdmProductController(TennisWebMVCContext context, IWebHostEnvironment appEnvironment)
 	{
 		_context = context;
 		_appEnvironment = appEnvironment;

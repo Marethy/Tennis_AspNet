@@ -1,9 +1,10 @@
-﻿using FoodWebMVC.Interfaces;
-using FoodWebMVC.Models;
+﻿
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Tennis.Interfaces;
+using Tennis.Models;
 
-namespace FoodWebMVC.Areas.Admin.Controllers;
+namespace Tennis.Areas.Admin.Controllers;
 
 [Area("Admin")]
 public class AdmStatisticsController : Controller

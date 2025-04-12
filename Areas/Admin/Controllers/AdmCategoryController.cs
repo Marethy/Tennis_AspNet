@@ -1,15 +1,15 @@
-﻿using FoodWebMVC.Models;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Tennis.Models;
 
-namespace FoodWebMVC.Areas.Admin.Controllers;
+namespace Tennnis.Areas.Admin.Controllers;
 
 [Area("Admin")]
 public class AdmCategoryController : Controller
 {
-	private readonly FoodWebMVCDbContext _context;
+	private readonly TennisWebMVCContext _context;
 
-	public AdmCategoryController(FoodWebMVCDbContext context)
+	public AdmCategoryController(TennisWebMVCContext context)
 	{
 		_context = context;
 	}

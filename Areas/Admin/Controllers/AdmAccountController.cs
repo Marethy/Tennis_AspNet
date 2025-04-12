@@ -1,9 +1,9 @@
 ﻿using System.Security.Claims;
-using FoodWebMVC.Interfaces;
-using FoodWebMVC.Models;
 using Microsoft.AspNetCore.Mvc;
+using Tennis.Interfaces;
+using Tennis.Models;
 
-namespace FoodWebMVC.Areas.Admin.Controllers;
+namespace Tennis.Areas.Admin.Controllers;
 
 [Area("Admin")]
 public class AdmAccountController : Controller

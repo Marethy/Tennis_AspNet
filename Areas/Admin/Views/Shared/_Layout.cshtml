@@ -1,0 +1,290 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+	<title>Admin - Tennis World - Thế giới Tennis</title>
+
+	<meta content="" name="description">
+	<meta content="" name="keywords">
+
+
+	<!-- Favicons -->
+	<link rel="shortcut icon" href="~/content/img/logo_black.ico" type="image/x-icon">
+	<link rel="apple-touch-icon" type="image/x-icon" href="~/Content/img/fast_food.png">
+
+
+	<!-- Google Fonts -->
+	<link href="https://fonts.gstatic.com" rel="preconnect">
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+	<!-- Vendor CSS Files -->
+	<link href="~/content/admin/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	<link href="~/content/admin/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+	<link href="~/content/admin/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+	<link href="~/content/admin/vendor/quill/quill.snow.css" rel="stylesheet">
+	<link href="~/content/admin/vendor/quill/quill.bubble.css" rel="stylesheet">
+	<link href="~/content/admin/vendor/remixicon/remixicon.css" rel="stylesheet">
+	<link href="~/content/admin/vendor/simple-datatables/style.css" rel="stylesheet">
+
+	<!-- Template Main CSS File -->
+	<link href="~/content/admin/css/style.css" rel="stylesheet">
+
+
+	<!-- =======================================================
+	* Template Name: NiceAdmin - v2.3.1
+	* Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
+	* Author: BootstrapMade.com
+	* License: https://bootstrapmade.com/license/
+	======================================================== -->
+</head>
+
+<body>
+
+<!-- ======= Header ======= -->
+<header id="header" class="header fixed-top d-flex align-items-center">
+
+	<div class="d-flex align-items-center justify-content-between">
+		<i class="bi bi-list toggle-sidebar-btn"></i>
+		<a asp-action="Index" asp-controller="AdmHome" class="logo d-flex align-items-center">
+			<img src="assets/img/logo.png" alt="">
+			<span class="d-none d-lg-block">TennisWebMVC</span>
+		</a>
+	</div><!-- End Logo -->
+
+	<nav class="header-nav ms-auto">
+		<ul class="d-flex align-items-center">
+
+			<li class="nav-item dropdown pe-3">
+				<a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+					<img src="~/content/admin/img/admin.jpg" alt="Profile" class="rounded-circle">
+					<span class="d-none d-md-block dropdown-toggle ps-2">Admin</span>
+				</a><!-- End Profile Iamge Icon -->
+
+				<ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+					<li class="dropdown-header">
+						<h6>Admin area</h6>
+					</li>
+
+					<li>
+						<hr class="dropdown-divider">
+					</li>
+
+					<li>
+						@if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+						{
+							<a class="dropdown-item d-flex align-items-center" asp-action="Logout" asp-controller="AdmAccount">
+								<i class="bi bi-box-arrow-right"></i>
+								<span>Đăng xuất</span>
+							</a>
+						}
+					</li>
+
+				</ul><!-- End Profile Dropdown Items -->
+			</li><!-- End Profile Nav -->
+
+		</ul>
+	</nav><!-- End Icons Navigation -->
+
+</header><!-- End Header -->
+<!-- ======= Sidebar ======= -->
+<aside id="sidebar" class="sidebar">
+
+			<a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
+				<i class="bi bi-menu-button-wide"></i><span>Quản lý đơn hàng</span><i class="bi bi-chevron-down ms-auto"></i>
+			</a>
+	<ul class="sidebar-nav" id="sidebar-nav">
+
+		<li class="nav-item">
+			<a class="nav-link" asp-action="Index" asp-controller="AdmHome">
+				<i class="bi bi-grid"></i>
+				<span>Trang chủ</span>
+			</a>
+		</li><!-- End Dashboard Nav -->
+
+		<li class="nav-item">
+			<ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+				<li>
+					<a asp-action="Index" asp-controller="AdmOrder">
+						<i class="bi bi-circle"></i><span>Đơn đặt hàng</span>
+					</a>
+				</li>
+				<li>
+					<a asp-action="Index" asp-controller="AdmOrderDetail">
+						<i class="bi bi-circle"></i><span>Chi tiết đơn đặt hàng</span>
+					</a>
+				</li>
+
+			</ul>
+		</li><!-- End Forms Nav -->
+
+		<li class="nav-item">
+			<a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
+				<i class="bi bi-layout-text-window-reverse"></i><span>Khách hàng</span><i class="bi bi-chevron-down ms-auto"></i>
+			</a>
+			<ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+				<li>
+					<a asp-controller="AdmCustomer" asp-action="Index">
+						<i class="bi bi-circle"></i><span>Thông tin khách hàng</span>
+					</a>
+				</li>
+			</ul>
+		</li><!-- End Tables Nav -->
+
+		<li class="nav-item">
+			<a class="nav-link collapsed" data-bs-target="#charts-nav" data-bs-toggle="collapse" href="#">
+				<i class="bi bi-bar-chart"></i><span>Quản lý sản phẩm</span><i class="bi bi-chevron-down ms-auto"></i>
+			</a>
+			<ul id="charts-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+				<li>
+					<a asp-action="Index" asp-controller="AdmProduct">
+						<i class="bi bi-circle"></i><span>Quản lý sản phẩm</span>
+					</a>
+				</li>
+				<li>
+					<a asp-action="Index" asp-controller="AdmCategory">
+						<i class="bi bi-circle"></i><span>Quản lý loại sản phẩm</span>
+					</a>
+				</li>
+				<li>
+					<a asp-action="Index" asp-controller="AdmProductRating">
+						<i class="bi bi-circle"></i><span>Quản lý đánh giá sản phẩm</span>
+					</a>
+				</li>
+
+			</ul>
+		</li><!-- End Charts Nav -->
+
+		<li class="nav-item">
+			<a class="nav-link collapsed" data-bs-target="#icons-nav" data-bs-toggle="collapse" href="#">
+				<i class="bi bi-gem"></i><span>Quản lý bài viết</span><i class="bi bi-chevron-down ms-auto"></i>
+			</a>
+			<ul id="icons-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+				<li>
+					<a asp-action="Index" asp-controller="AdmBlog">
+						<i class="bi bi-circle"></i><span>Quản lý bài viết</span>
+					</a>
+				</li>
+			</ul>
+		</li><!-- End Icons Nav -->
+
+		<li class="nav-item">
+			<a class="nav-link collapsed" data-bs-target="#icons-nav-new" data-bs-toggle="collapse" href="#">
+				<i class="bi bi-gem"></i><span>Quản lý banner</span><i class="bi bi-chevron-down ms-auto"></i>
+			</a>
+			<ul id="icons-nav-new" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+				<li>
+					<a asp-action="Index" asp-controller="AdmBanner">
+						<i class="bi bi-circle"></i><span>Quản lý banner</span>
+					</a>
+				</li>
+			</ul>
+		</li><!-- End Icons Nav -->
+
+		<li class="nav-heading">Thông kê và báo cáo</li>
+
+		<li class="nav-item">
+			<a class="nav-link collapsed" data-bs-target="#icons-nav-new-1" data-bs-toggle="collapse" href="#">
+				<i class="bi bi-gem"></i><span>Thống kê kinh doanh</span><i class="bi bi-chevron-down ms-auto"></i>
+			</a>
+			<ul id="icons-nav-new-1" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+				<li>
+					<a class="nav-link collapsed" asp-action="RevenueStructure" asp-controller="AdmStatistics">
+						<i class="bi bi-person"></i>
+						<span>Lợi nhuận</span>
+					</a>
+				</li>
+				<li>
+					<a class="nav-link collapsed" asp-action="StaticProduct" asp-controller="AdmStatistics">
+						<i class="bi bi-person"></i>
+						<span>Phân tích sản phẩm</span>
+					</a>
+				</li>
+				<li>
+					<a class="nav-link collapsed" asp-action="StaticProductAmount" asp-controller="AdmStatistics">
+						<i class="bi bi-person"></i>
+						<span>Số lượng sản phẩm đã bán</span>
+					</a>
+				</li>
+				<li>
+					<a class="nav-link collapsed" asp-action="StaticProductRevenue" asp-controller="AdmStatistics">
+						<i class="bi bi-person"></i>
+						<span>Lợi nhuận trên từng sản phẩm</span>
+					</a>
+				</li>
+			</ul>
+		</li><!-- End Icons Nav -->
+
+
+		<li class="nav-item">
+			<a class="nav-link collapsed" href="#main">
+				<i class="bi bi-person"></i>
+				<span>Số người online: <b id="customerCount">0</b> người</span>
+			</a>
+		</li><!-- End Profile Page Nav -->
+	</ul>
+
+</aside><!-- End Sidebar-->
+<main class="main" id="main">
+	@RenderBody()
+</main><!-- End #main -->
+<!-- ======= Footer ======= -->
+<footer id="footer" class="footer">
+	<div class="copyright">
+		&copy; Bản quyền
+		<strong>
+			<span>Ăn Vặt Food</span>
+		</strong>. Đã đăng ký Bản quyền
+	</div>
+	<div class="credits">
+
+		<span>© 2024 FoodWebMVC - Dev team: Trương Đắc Điền - Trần Thiện Khiêm - Nguyễn Quốc Huy </span>
+
+	</div>
+</footer><!-- End Footer -->
+
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center">
+	<i class="bi bi-arrow-up-short"></i>
+</a>
+
+
+<!-- Vendor JS Files -->
+<script src="~/content/admin/vendor/apexcharts/apexcharts.min.js"></script>
+<script src="~/content/admin/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="~/content/admin/vendor/chart.js/chart.min.js"></script>
+<script src="~/content/admin/vendor/echarts/echarts.min.js"></script>
+<script src="~/content/admin/vendor/quill/quill.min.js"></script>
+<script src="~/content/admin/vendor/simple-datatables/simple-datatables.js"></script>
+<script src="~/content/admin/vendor/tinymce/tinymce.min.js"></script>
+<script src="~/content/admin/vendor/php-email-form/validate.js"></script>
+
+<!-- Template Main JS File -->
+<script src="~/content/admin/js/main.js"></script>
+<script src="~/js/imagepreview.js"></script>
+
+<!-- Library Script -->
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.min.js"></script>
+<script src="~/lib/microsoft/signalr/dist/browser/signalr.min.js"></script>
+
+<!-- Tiny -->
+<script src="https://cdn.tiny.cloud/1/xekc15gke11qin6cwkvv4jha5qamongkxqxqkige4s3m32yr/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+<script>
+        tinymce.init({
+            menubar: false,
+            toolbar: false,
+            statusbar: false,
+            selector: "textarea",
+            plugins: [
+                "insertdatetime",
+                "autoresize"
+            ]
+        });
+    </script>
+
+<script src="~/js/admingetcustomercount.js"></script>
+</body>
+
+</html>
