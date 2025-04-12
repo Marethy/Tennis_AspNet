@@ -1,0 +1,38 @@
+﻿<form asp-action="SearchByFilter" method="get" class="filter-form">
+	<div class="toolbox elemento_stick">
+		<div class="container">
+			<ul class="filter-options clearfix" style="display: flex; align-items: center; gap: 15px; margin: 0; padding: 0; list-style: none;">
+				<!-- Dropdown Sort -->
+				<li style="display: flex; align-items: center; min-width: 200px; white-space: nowrap;">
+					<label for="sort" class="sort-label" style="margin-right: 10px;">Sắp xếp theo:</label>
+					<select name="sort" id="sort" class="form-control" style="min-width: 150px;">
+						<option value="discount" selected>Đã lọc</option>
+						<option value="discount">Khuyến mãi</option>
+						<option value="date_asce">Mới nhất</option>
+						<option value="date_desc">Cũ nhất</option>
+						<option value="price_asce">Giá cao đến thấp</option>
+						<option value="price_desc">Giá thấp đến cao</option>
+					</select>
+				</li>
+
+				<!-- Filter Button -->
+				<li>
+					<label for="filter-submit" class="filter-button" style="cursor: pointer;">
+						<span><i class="ti-filter"></i> Lọc</span>
+					</label>
+				</li>
+
+				<!-- Grid/List View Toggle -->
+				<li class="view-toggle" style="margin-left: auto;">
+					<a asp-action="Index" asp-controller="Product" class="toggle-btn active" title="Grid View" style="margin-right: 10px;">
+						<i class="ti-view-grid"></i>
+					</a>
+					<a asp-action="ListView" asp-controller="Product" class="toggle-btn" title="List View">
+						<i class="ti-view-list"></i>
+					</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<input value="Lọc" type="submit" id="filter-submit" hidden/>
+</form>
