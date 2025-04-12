@@ -1,7 +1,17 @@
+using Microsoft.EntityFrameworkCore;
+using Tennis.Interfaces;
+using Tennis.Models;
+using Tennis.Repositories;
+
 var builder = WebApplication.CreateBuilder(args);
+
+
+builder.Services.AddDbContext<TennisWebMVCContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<IBannerRepository, BannerRepository>();
 
 var app = builder.Build();
 
