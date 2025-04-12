@@ -2,7 +2,6 @@ using Microsoft.EntityFrameworkCore;
 using Tennis.Interfaces;
 using Tennis.Models;
 using Tennis.Repositories;
-
 var builder = WebApplication.CreateBuilder(args);
 
 
@@ -36,7 +35,7 @@ var app = builder.Build();
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+    // The default HSTS value is 30 days. Youg may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 

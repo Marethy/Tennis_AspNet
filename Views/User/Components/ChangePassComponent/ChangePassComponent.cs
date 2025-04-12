@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace FoodWebMVC.Views.User.Components.ChangePassComponent;
+namespace Tennis.Views.User.Components.ChangePassComponent;
 
 public class ChangePassComponent : ViewComponent
 {
