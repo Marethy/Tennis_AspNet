@@ -1,0 +1,37 @@
+﻿@foreach (var item in Model)
+{
+	<div class="col-lg-6">
+		<div id="comments">
+			<ul>
+				<li>
+					<div class="avatar">
+						<a>
+							<img src="~/Content/img/staff/@item.Customer.CustomerImage" alt="@item.Customer.CustomerFullName">
+						</a>
+					</div>
+					<div class="comment_right clearfix">
+						<div class="comment_info">
+							Đăng bởi <a>@item.Customer.CustomerFullName</a><span>|</span>@item.PRDateCreated.ToShortDateString()<span>|</span>
+							<div class="clearfix add_bottom_10">
+								<span class="rating">
+									@for (var i = 1; i <= item.Stars; i++)
+									{
+										<i class="icon-star voted"></i>
+									}
+									@for (int i = 5 - item.Stars; i >= 1; i--)
+									{
+										<i class="bi bi-star"></i>
+									}
+									<em>@item.Stars/5.0</em>
+								</span>
+							</div>
+
+						</div>
+						<p>@item.RatingContent</p>
+					</div>
+				</li>
+			</ul>
+		</div>
+
+	</div>
+}

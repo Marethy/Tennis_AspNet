@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Tennis.Interfaces;
 using Tennis.Models;
 
-namespace FoodWebMVC.Controllers;
+namespace Tennis.Controllers;
 
 [AllowAnonymous]
 public class UserController : Controller

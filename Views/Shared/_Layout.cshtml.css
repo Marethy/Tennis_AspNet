@@ -1,4 +1,4 @@
-﻿/* Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
+﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
 
 a.navbar-brand {
@@ -39,10 +39,17 @@ button.accept-policy {
   line-height: inherit;
 }
 
-.footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  white-space: nowrap;
-  line-height: 60px;
+footer {
+    position: static;
+    bottom: auto;
+    width: 100%;
+    z-index: 1; /* Đảm bảo footer không bị che khuất */
+    background: #333; /* Màu nền */
+    color: #fff; /* Màu chữ */
 }
+
+main {
+    display: block;
+    min-height: calc(100vh - 100px); /* Điều chỉnh theo chiều cao footer */
+}
+
