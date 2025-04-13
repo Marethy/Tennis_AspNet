@@ -1,16 +1,16 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FoodWebMVC.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Tennis.Models;
 
-namespace Tennis.Areas.Admin.Controllers;
+namespace FoodWebMVC.Areas.Admin.Controllers;
 
 [Area("Admin")]
 public class AdmOrderController : Controller
 {
-	private readonly TennisWebMVCContext _context;
+	private readonly FoodWebMVCDbContext _context;
 
-	public AdmOrderController(TennisWebMVCContext context)
+	public AdmOrderController(FoodWebMVCDbContext context)
 	{
 		_context = context;
 	}
