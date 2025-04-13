@@ -1,0 +1,18 @@
+﻿@using Newtonsoft.Json
+<canvas id="newchartAmount"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="~/js/jquery.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+
+
+        var ctx = document.getElementById('newchartAmount').getContext('2d');
+        var model = @Html.Raw(JsonConvert.SerializeObject(Model) as string);
+        console.log(model)
+        var doanhthunam = new Chart(ctx, model)
+    });
+
+
+</script>
