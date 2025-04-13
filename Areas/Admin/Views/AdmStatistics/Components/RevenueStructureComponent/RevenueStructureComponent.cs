@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace FoodWebMVC.Areas.Admin.Views.AdmStatistics.Components.RevenueStructureComponent;
+namespace Tennis.Areas.Admin.Views.AdmStatistics.Components.RevenueStructureComponent;
 
 public class RevenueStructureComponent : ViewComponent
 {

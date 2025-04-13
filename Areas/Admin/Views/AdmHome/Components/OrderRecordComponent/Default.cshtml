@@ -1,0 +1,16 @@
+﻿@foreach (var item in Model)
+{
+	<tr>
+		<th scope="row">
+			<a href="#">#@item.OrderId</a>
+		</th>
+		<td>@item.CustomerName</td>
+		<td>
+			<a asp-action="Details" asp-controller="AdmOrder" asp-route-id="@item.OrderId" class="text-primary">@item.ProductName</a>
+		</td>
+		<td>@item.TotalMoney Đ</td>
+		<td>
+			<span class="badge bg-@item.Message">@item.Status</span>
+		</td>
+	</tr>
+}
