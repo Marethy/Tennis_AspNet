@@ -2,24 +2,24 @@
 @{
 	var cul = CultureInfo.GetCultureInfo("vi-VN");
 }
+
 <div class="container margin_60_35">
 	<div class="main_title">
-		<h2>Sản phẩm tương tự</h2>
+		<h2>Mới nhất</h2>
 		<span>Sản phẩm</span>
-		<p>Tennis World - Các món ăn vặt hàng đầu Việt Nam</p>
+		<p>Hàng mới nhập</p>
 	</div>
 	<div class="owl-carousel owl-theme products_carousel">
 		@foreach (var item in Model)
 		{
 			<div class="item">
 				<div class="grid_item">
+					<span class="ribbon new">Mới</span>
 					<figure>
-						<span class="ribbon off"> - @Convert.ToDouble(item.ProductDiscount)%</span>
 						<a asp-action="ProductDetail" asp-controller="Product" asp-route-id="@item.ProductId">
 							<img class="img-fluid lazy" src="~/Content/img/products/@item.ProductImage" alt="@item.ProductName" style="width: 400px; height: 200px">
 							<img class="img-fluid lazy" src="~/Content/img/products/@item.ProductImage" alt="@item.ProductName" style="width: 400px; height: 200px">
 						</a>
-						<div data-countdown="2022/8/22" class="countdown"></div>
 					</figure>
 					<div class="rating">
 						@for (var i = 1; i <= item.ProductRating; i++)
@@ -35,8 +35,7 @@
 						<h3>@item.ProductName</h3>
 					</a>
 					<div class="price_box">
-						<span class="old_price"> @(item.ProductPrice?.ToString("#,### Đ", cul.NumberFormat) ?? "0 Đ") </span>
-						<span class="new_price"> @((item.ProductPrice - item.ProductPrice * item.ProductDiscount / 100)?.ToString("#,### Đ", cul.NumberFormat) ?? "0 Đ") </span>
+						<span class="new_price">@item.ProductPrice.ToString("#,###", cul.NumberFormat) Đ</span>
 					</div>
 					<ul>
 						@if (User.Identity.IsAuthenticated)
@@ -69,9 +68,8 @@
 				</div>
 				<!-- /grid_item -->
 			</div>
-			<!-- /item -->
 		}
 	</div>
 	<!-- /products_carousel -->
 </div>
-<script src="~/js/alert.js" text="text/javascript"></script>
+<!-- /container -->

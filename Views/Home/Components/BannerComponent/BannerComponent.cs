@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Tennis.Interfaces;
+﻿using Tennis.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Tennis.Views.Home.Components.BannerComponent;
 

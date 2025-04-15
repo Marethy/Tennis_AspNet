@@ -4,14 +4,14 @@
 }
 <div class="container margin_60_35">
 	<div class="main_title">
-		<h2>Sản phẩm tương tự</h2>
+		<h2>Bán chạy</h2>
 		<span>Sản phẩm</span>
-		<p>Tennis World - Các món ăn vặt hàng đầu Việt Nam</p>
+		<p>Các sản phẩm được mua nhiều nhất</p>
 	</div>
-	<div class="owl-carousel owl-theme products_carousel">
+	<div class="row small-gutters">
 		@foreach (var item in Model)
 		{
-			<div class="item">
+			<div class="col-6 col-md-4 col-xl-3">
 				<div class="grid_item">
 					<figure>
 						<span class="ribbon off"> - @Convert.ToDouble(item.ProductDiscount)%</span>
@@ -19,7 +19,7 @@
 							<img class="img-fluid lazy" src="~/Content/img/products/@item.ProductImage" alt="@item.ProductName" style="width: 400px; height: 200px">
 							<img class="img-fluid lazy" src="~/Content/img/products/@item.ProductImage" alt="@item.ProductName" style="width: 400px; height: 200px">
 						</a>
-						<div data-countdown="2022/8/22" class="countdown"></div>
+						<div data-countdown="@DateTime.Now.AddHours(5).ToString("yyyy-MM-dd h:mm tt")" class="countdown"></div>
 					</figure>
 					<div class="rating">
 						@for (var i = 1; i <= item.ProductRating; i++)
@@ -36,7 +36,7 @@
 					</a>
 					<div class="price_box">
 						<span class="old_price"> @(item.ProductPrice?.ToString("#,### Đ", cul.NumberFormat) ?? "0 Đ") </span>
-						<span class="new_price"> @((item.ProductPrice - item.ProductPrice * item.ProductDiscount / 100)?.ToString("#,### Đ", cul.NumberFormat) ?? "0 Đ") </span>
+						<span class="new_price">@((item.ProductPrice - item.ProductPrice * item.ProductDiscount / 100).ToString("#,###", cul.NumberFormat)) Đ</span>
 					</div>
 					<ul>
 						@if (User.Identity.IsAuthenticated)
@@ -69,9 +69,9 @@
 				</div>
 				<!-- /grid_item -->
 			</div>
-			<!-- /item -->
 		}
 	</div>
-	<!-- /products_carousel -->
+	<!-- /row -->
 </div>
+<!-- /container -->
 <script src="~/js/alert.js" text="text/javascript"></script>
