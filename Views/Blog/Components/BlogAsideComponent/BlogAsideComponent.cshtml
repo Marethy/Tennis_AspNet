@@ -1,0 +1,77 @@
+﻿<aside class="col-lg-3">
+
+	<!-- Search widget -->
+	<div class="widget search_blog d-none d-sm-none d-md-none d-lg-block">
+		<div class="form-group">
+			<input type="text" name="search" id="search_blog" class="form-control" placeholder="Search articles...">
+			<button type="submit">
+				<i class="ti-search"></i><span class="sr-only">Search</span>
+			</button>
+		</div>
+	</div>
+	<!-- /widget -->
+	<!-- Recent Posts -->
+	<div class="widget">
+		<div class="widget-title">
+			<h4>Recent Blog Posts</h4>
+		</div>
+		<ul class="comments-list">
+			@foreach (var item in Model)
+			{
+				<li>
+					<div class="alignleft">
+						<a asp-action="BlogPost" asp-route-id="@item.BlogId">
+							<img src="~/Content/img/products/@item.BlogImage" alt="@item.BlogName">
+						</a>
+					</div>
+					<small>@item.BlogDateCreated</small>
+					<h3>
+						<a asp-action="BlogPost" asp-route-id="@item.BlogId" title="@item.BlogName">
+							@item.BlogName ...
+						</a>
+					</h3>
+				</li>
+			}
+		</ul>
+	</div>
+	<!-- /widget -->
+	<!-- Categories -->
+	<div class="widget">
+		<div class="widget-title">
+			<h4>Categories</h4>
+		</div>
+		<ul class="cats">
+			<li>
+				<a href="#">Rackets & Gear <span>(12)</span></a>
+			</li>
+			<li>
+				<a href="#">Training Tips <span>(18)</span></a>
+			</li>
+			<li>
+				<a href="#">Tennis News <span>(26)</span></a>
+			</li>
+			<li>
+				<a href="#">Match Strategy <span>(15)</span></a>
+			</li>
+		</ul>
+	</div>
+	<!-- /widget -->
+	<!-- Tags -->
+	<div class="widget">
+		<div class="widget-title">
+			<h4>Popular Tags</h4>
+		</div>
+		<div class="tags">
+			<a href="#">Tennis</a>
+			<a href="#">Rackets</a>
+			<a href="#">Footwork</a>
+			<a href="#">Training</a>
+			<a href="#">Pro Tips</a>
+			<a href="#">Shoes</a>
+			<a href="#">Tournaments</a>
+		</div>
+	</div>
+	<!-- /widget -->
+
+</aside>
+<!-- /aside -->
