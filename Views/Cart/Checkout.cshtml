@@ -1,0 +1,100 @@
+﻿@{
+	ViewData["Title"] = "Checkout";
+}
+
+<div class="container margin_30">
+	<div class="page_header">
+		<div class="breadcrumbs">
+			<ul>
+				<li>
+					<a asp-action="Index" asp-controller="Home">Home</a>
+				</li>
+				<li>
+					<a asp-action="Index" asp-controller="Product">Product</a>
+				</li>
+			</ul>
+		</div>
+		<h1>Proceed for Payment</h1>
+
+	</div>
+	<!-- /page_header -->
+	<div class="row">
+		<div class="col-lg-4 col-md-6">
+			<div class="step middle payments">
+				<h3>2. Payment and Shipping</h3>
+				<ul class="list-unstyled">
+					<li>
+						<label class="container_radio">
+							Credit Card
+							<a href="#0" class="info" data-toggle="modal" data-target="#payments_method" title="More info about Credit Card"></a>
+							<input type="radio" name="payment" checked>
+							<span class="checkmark"></span>
+						</label>
+					</li>
+					<li>
+						<label class="container_radio">
+							PayPal
+							<a href="#0" class="info" data-toggle="modal" data-target="#payments_method" title="More info about PayPal"></a>
+							<input type="radio" name="payment">
+							<span class="checkmark"></span>
+						</label>
+					</li>
+					<li>
+						<label class="container_radio">
+							Cash on Delivery
+							<a href="#0" class="info" data-toggle="modal" data-target="#payments_method" title="More info about COD"></a>
+							<input type="radio" name="payment">
+							<span class="checkmark"></span>
+						</label>
+					</li>
+					<li>
+						<label class="container_radio">
+							Bank Transfer
+							<a href="#0" class="info" data-toggle="modal" data-target="#payments_method" title="More info about Bank Transfer"></a>
+							<input type="radio" name="payment">
+							<span class="checkmark"></span>
+						</label>
+					</li>
+				</ul>
+
+				<!-- Payment Info Section -->
+				<div class="payment_info d-none d-sm-block mt-3">
+					<figure>
+						<img src="img/cards_all.svg" alt="Accepted payment methods" class="img-fluid">
+					</figure>
+					<p>
+						We support all major payment methods including Visa, Mastercard, PayPal, and bank transfers.
+						Your payment information is securely processed with end-to-end encryption.
+					</p>
+				</div>
+
+				<h6 class="pb-2 mt-4">Shipping Method</h6>
+
+				<ul class="list-unstyled">
+					<li>
+						<label class="container_radio">
+							Standard Shipping
+							<a href="#0" class="info" data-toggle="modal" data-target="#payments_method" title="Estimated 3-5 business days"></a>
+							<input type="radio" name="shipping" checked>
+							<span class="checkmark"></span>
+						</label>
+					</li>
+					<li>
+						<label class="container_radio">
+							Express Shipping
+							<a href="#0" class="info" data-toggle="modal" data-target="#payments_method" title="Delivered within 1-2 business days"></a>
+							<input type="radio" name="shipping">
+							<span class="checkmark"></span>
+						</label>
+					</li>
+				</ul>
+
+
+			</div>
+			<!-- /step -->
+
+		</div>
+	</div>
+	<!-- /row -->
+</div>
+<!-- /container -->

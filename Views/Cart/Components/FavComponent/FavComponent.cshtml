@@ -1,0 +1,35 @@
+﻿<table class="table table-hover">
+	<thead>
+	<tr>
+		<th scope="col">No.</th>
+		<th scope="col">Product name</th>
+		<th scope="col">Image</th>
+		<th scope="col"></th>
+	</tr>
+	</thead>
+	<tbody>
+	@foreach (var item in Model)
+	{
+		<tr>
+			<th scope="row">@item.Product.ProductId</th>
+			<td>@item.Product.ProductName</td>
+			<td>
+				<img src="~/Content/img/products/@item.Product.ProductImage" width="150">
+			</td>
+			<td>
+				<a asp-action="RemoveInFavorite"
+				   asp-controller="Cart"
+				   asp-route-id="@item.Product.ProductId"
+				   data-ajax-success="removeFavAlert"
+				   data-ajax-failure="addCartFailAlert"
+				   data-ajax-update="#favorite-list"
+				   class="btn_1">
+					Delete
+				</a>
+			</td>
+		</tr>
+	}
+
+	</tbody>
+</table>
+<!-- End Table with hoverable rows -->

@@ -1,0 +1,36 @@
+﻿@using System.Globalization
+@{
+	var cul = CultureInfo.GetCultureInfo("vi-VN");
+}
+
+
+<div class="col-lg-7" id="Order-tabld-detail">
+	<div class="card">
+		<div class="card-body">
+			<h5 class="card-title">Your order details</h5>
+
+			<!-- Table with hoverable rows -->
+			<table class="table table-striped" id="Order-tabld-detail">
+				<thead>
+				<tr>
+					<th scope="col">Product name</th>
+					<th scope="col">Unit price</th>
+					<th scope="col">Quantity</th>
+				</tr>
+				</thead>
+				<tbody>
+				@foreach (var item in Model)
+				{
+					<tr>
+						<th scope="row">@item.ProductId</th>
+						<td>@item.UnitPrice</td>
+						<td>@item.Quantity</td>
+					</tr>
+				}
+				</tbody>
+			</table>
+			<!-- End Table with hoverable rows -->
+		</div>
+	</div>
+	<!-- Table with stripped rows -->
+</div>

@@ -1,0 +1,105 @@
+﻿@using System.Globalization
+@{
+	var cul = CultureInfo.GetCultureInfo("vi-VN");
+}
+
+@{
+	ViewData["Title"] = "Order";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container margin_30">
+	<div class="page_header">
+		<div class="breadcrumbs">
+			<ul>
+				<li>
+					<a asp-action="Index" asp-controller="Home">Home</a>
+				</li>
+				<li>Checkout</li>
+			</ul>
+		</div>
+		<h1>Checkout Page</h1>
+	</div>
+	<!-- /page_header -->
+
+	<div class="row">
+		<!-- Order Info -->
+		<div class="col-lg-6 col-md-6">
+			<div class="step last">
+				<h3>Order Information</h3>
+				<div class="box_general summary">
+					<ul>
+						@foreach (var item in Model)
+						{
+							var productPrice = item.Product.ProductPrice;
+							var discount = item.Product.ProductDiscount;
+							var finalPrice = productPrice - productPrice * discount / 100;
+							<li class="clearfix">
+								<em>@item.Product.ProductName</em>
+								<span>@finalPrice.ToString("#,###", cul.NumberFormat) ₫</span>
+							</li>
+						}
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		<!-- Customer Info & Payment -->
+		<div class="col-lg-6 col-md-6">
+			<div class="step last">
+				<h3>Customer Information</h3>
+				<div class="box_general summary">
+					<form asp-action="Order" method="post">
+						<ul>
+							<li class="clearfix">
+								<em><strong>Full Name</strong></em>
+								<span>@ViewBag.Name</span>
+							</li>
+							<li class="clearfix">
+								<em><strong>Phone Number</strong></em>
+								<span>@ViewBag.Phone</span>
+							</li>
+							<li class="clearfix">
+								<em><strong>Email</strong></em>
+								<span>@ViewBag.Email</span>
+							</li>
+							<li class="clearfix">
+								<em><strong>Address</strong></em>
+								<span>@ViewBag.Address</span>
+							</li>
+						</ul>
+
+						<ul>
+							<li class="clearfix">
+								<em><strong>Subtotal</strong></em>
+								<span>@ViewData["TotalSubMoney"]</span>
+							</li>
+							<li class="clearfix">
+								<em><strong>Shipping Fee</strong></em>
+								<span>@ViewData["ShippingCost"]</span>
+							</li>
+						</ul>
+
+						<ul>
+							<li>
+								<label>Select a payment method</label>
+								<select name="ChoosePaymentMethod" id="cars">
+									<option value="0">Cash on delivery</option>
+									<option value="1">PayOS</option>
+								</select>
+							</li>
+						</ul>
+
+						<ul>
+							<span>@ViewBag.ErrorMessage</span>
+						</ul>
+
+						<div class="total clearfix">TOTAL <span>@ViewData["TotalMoney"] ₫</span></div>
+						<button type="submit" class="btn_1 full-width">Confirm and Pay</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- /container -->
