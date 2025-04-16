@@ -1,9 +1,9 @@
 ﻿@{
-	ViewData["Title"] = "Đổi thông tin";
+	ViewData["Title"] = "Change Information";
 	Layout = "~/Areas/Admin/Views/Shared/_LayoutLogin.cshtml";
 }
 <div class="container">
-	<!-- register page-->
+	<!-- Register Page -->
 	<section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
 		<div class="container">
 			<div class="row justify-content-center">
@@ -12,7 +12,7 @@
 					<div class="d-flex justify-content-center py-4">
 						<a asp-action="Index" asp-controller="Home" class="logo d-flex align-items-center w-auto">
 							<img src="~/Content/img/logo_black.png" alt="">
-							<span class="d-none d-lg-block">Tennis World</span>
+							<span class="d-none d-lg-block">Tennis Pro Store</span>
 						</a>
 					</div>
 					<!-- End Logo -->
@@ -21,13 +21,14 @@
 						<div class="form_container">
 							<div class="card-body">
 								<div class="pt-5 pb-2">
-									<h5 class="card-title text-center pb-0 fs-4">Đổi mật khẩu</h5>
-									<p class="text-center small">Nhập thông tin dưới đây để đổi mật khẩu</p>
+									<h5 class="card-title text-center pb-0 fs-4">Change Password</h5>
+									<p class="text-center small">Enter the information below to change your password</p>
 									@await Component.InvokeAsync("ChangePassComponent")
 								</div>
 							</div>
 						</div>
 					</div>
+
 				</div>
 			</div>
 		</div>

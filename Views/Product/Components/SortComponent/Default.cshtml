@@ -4,21 +4,21 @@
 			<ul class="filter-options clearfix" style="display: flex; align-items: center; gap: 15px; margin: 0; padding: 0; list-style: none;">
 				<!-- Dropdown Sort -->
 				<li style="display: flex; align-items: center; min-width: 200px; white-space: nowrap;">
-					<label for="sort" class="sort-label" style="margin-right: 10px;">Sắp xếp theo:</label>
+					<label for="sort" class="sort-label" style="margin-right: 10px;">Sort by:</label>
 					<select name="sort" id="sort" class="form-control" style="min-width: 150px;">
-						<option value="discount" selected>Đã lọc</option>
-						<option value="discount">Khuyến mãi</option>
-						<option value="date_asce">Mới nhất</option>
-						<option value="date_desc">Cũ nhất</option>
-						<option value="price_asce">Giá cao đến thấp</option>
-						<option value="price_desc">Giá thấp đến cao</option>
+						<option value="discount" selected>Filtered</option>
+						<option value="discount">Promotion</option>
+						<option value="date_asce">Newest</option>
+						<option value="date_desc">Oldest</option>
+						<option value="price_asce">High to Low Price</option>
+						<option value="price_desc">Low to High Price</option>
 					</select>
 				</li>
 
 				<!-- Filter Button -->
 				<li>
 					<label for="filter-submit" class="filter-button" style="cursor: pointer;">
-						<span><i class="ti-filter"></i> Lọc</span>
+						<span><i class="ti-filter"></i> Filter</span>
 					</label>
 				</li>
 
@@ -34,5 +34,5 @@
 			</ul>
 		</div>
 	</div>
-	<input value="Lọc" type="submit" id="filter-submit" hidden/>
+	<input value="Filter" type="submit" id="filter-submit" hidden />
 </form>

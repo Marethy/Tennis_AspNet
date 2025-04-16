@@ -1,10 +1,9 @@
 ﻿@{
-	ViewData["Title"] = "Đổi thông tin";
+	ViewData["Title"] = "Update Information";
 	Layout = "~/Areas/Admin/Views/Shared/_LayoutLogin.cshtml";
 }
 
 <div class="container">
-	<!-- register page-->
 	<section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-12">
 		<div class="container">
 			<div class="row justify-content-center">
@@ -12,64 +11,49 @@
 				<div class="d-flex justify-content-center py-5">
 					<a asp-action="Index" asp-controller="Home" class="logo d-flex align-items-center w-auto">
 						<img src="~/Content/img/logo_black.png" alt="">
-						<span class="d-none d-lg-block">Tennis World</span>
+						<span class="d-none d-lg-block">Tennis Pro Store</span>
 					</a>
 				</div>
-				<!-- End Logo -->
 
 				<div class="pagetitle">
-					<h1>Thông tin của bạn</h1>
+					<h1>Your Information</h1>
 					<nav>
 						<ol class="breadcrumb">
-							<li class="breadcrumb-item">
-								<a asp-action="Index" asp-controller="Home">Trang chủ</a>
-							</li>
-							<li class="breadcrumb-item active">Trang người dùng</li>
+							<li class="breadcrumb-item"><a asp-action="Index" asp-controller="Home">Home</a></li>
+							<li class="breadcrumb-item active">User Page</li>
 						</ol>
 					</nav>
-				</div><!-- End Page Title -->
+				</div>
 
 				<section class="section profile">
 					<div class="row">
 						<div class="col-xl-4">
 							@await Component.InvokeAsync("AvatarComponent")
 						</div>
-
 						<div class="col-xl-8">
-
 							<div class="card">
 								<div class="card-body pt-3">
 									<!-- Bordered Tabs -->
 									<ul class="nav nav-tabs nav-tabs-bordered">
-
 										<li class="nav-item">
-											<button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-overview">Tổng quát</button>
+											<button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-overview">Overview</button>
 										</li>
-
 										<li class="nav-item">
-											<button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit">Chỉnh sửa thông tin</button>
+											<button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit">Edit Info</button>
 										</li>
-
 										<li class="nav-item">
-											<button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-change-password" data-ajax="true" data-ajax-update="#ChagePass">Đổi mật khẩu</button>
+											<button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-change-password" data-ajax="true" data-ajax-update="#ChangePass">Change Password</button>
 										</li>
-
 									</ul>
 									<div class="tab-content pt-2">
-
 										<div class="tab-pane fade show active profile-overview" id="profile-overview">
 											@await Component.InvokeAsync("ShowProfileComponent")
-
 										</div>
-
 										<div class="tab-pane fade profile-edit pt-3" id="profile-edit">
 											@await Component.InvokeAsync("EditProfileComponent")
-
 										</div>
 										<div class="tab-pane fade pt-3" id="profile-change-password">
-											<!-- Change Password Form -->
-
-											<a asp-action="ChangePass" asp-controller="User" id="ChangePass">Đổi mật khẩu</a>
+											<a asp-action="ChangePass" asp-controller="User" id="ChangePass">Change Password</a>
 										</div>
 									</div><!-- End Bordered Tabs -->
 								</div>

@@ -1,20 +1,15 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿namespace Tennis.Views.Home.Components.BannerComponent;
+
+using Microsoft.AspNetCore.Mvc;
 using Tennis.Interfaces;
 
-namespace Tennis.Views.Home.Components.BannerComponent;
-
-public class BannerComponent : ViewComponent
+public class BannerComponent(IBannerRepository repo) : ViewComponent
 {
-	private readonly IBannerRepository _repo;
+    private readonly IBannerRepository _repo = repo;
 
-	public BannerComponent(IBannerRepository repo)
-	{
-		_repo = repo;
-	}
-
-	public async Task<IViewComponentResult> InvokeAsync()
-	{
-		var obj = await _repo.GetListAsync(take: 3);
-		return View("BannerComponent", obj);
-	}
+    public async Task<IViewComponentResult> InvokeAsync()
+    {
+        var obj = await _repo.GetListAsync(take: 3);
+        return View("BannerComponent", obj);
+    }
 }

@@ -1,0 +1,36 @@
+﻿@using System.Text.RegularExpressions
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+<div class="container margin_60_35">
+	<div class="main_title">
+		<h2>Latest News</h2>
+		<span>Article</span>
+		<p>Follow the latest articles about Tennis Pro Store</p>
+	</div>
+	<div class="row">
+		@foreach (var item in Model)
+		{
+			<div class="col-lg-6">
+				<a class="box_news" asp-action="BlogPost" asp-controller="Blog" asp-route-id="@item.BlogId">
+					<figure>
+						<img src="~/Content/img/products/@item.BlogImage" alt="@item.BlogName" width="400" height="266" class="lazy">
+						<figcaption>
+							<strong>@item.BlogDateCreated.Day</strong>@item.BlogDateCreated.Month
+						</figcaption>
+					</figure>
+					<ul>
+						<li>@item.BlogDateCreated</li>
+					</ul>
+					<h4>@item.BlogName</h4>
+					<p>@Html.Raw(
+						   item.BlogContent.Substring(0, Math.Min(100, item.BlogContent.Length)) 
+						   + (item.BlogContent.Length > 100 ? "..." : "")
+					   )</p>
+				</a>
+			</div>
+		}
+
+		<!-- /box_news -->
+	</div>
+	<!-- /row -->
+</div>
+<!-- /container -->

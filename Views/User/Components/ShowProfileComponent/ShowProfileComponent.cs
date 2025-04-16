@@ -4,8 +4,8 @@ namespace Tennis.Views.User.Components.ShowProfileComponent;
 
 public class ShowProfileComponent : ViewComponent
 {
-	public IViewComponentResult Invoke()
-	{
-		return View();
-	}
+    public IViewComponentResult Invoke()
+    {
+        return View();
+    }
 }

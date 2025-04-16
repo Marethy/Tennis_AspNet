@@ -11,14 +11,14 @@
 			<div class="breadcrumbs">
 				<ul>
 					<li>
-						<a asp-action="Index" asp-controller="Home">Trang chủ</a>
+						<a asp-action="Index" asp-controller="Home">Home</a>
 					</li>
 					<li>
-						<a asp-action="Index" asp-controller="Product">Sản phẩm</a>
+						<a asp-action="Index" asp-controller="Product">Product</a>
 					</li>
 				</ul>
 			</div>
-			<h1>Ăn Vặt Food - Sản phẩm</h1>
+			<h1>Tennis Pro Store - Product</h1>
 		</div>
 	</div>
 	<img src="~/Content/img/slides/cac_mon_an_vat.jpg" class="img-fluid" style="width: 100%; height: 100%; object-fit: cover;" alt="">
@@ -40,7 +40,7 @@
 				</div>
 				<div class="filter_type version_2">
 					<h4>
-						<a href="#filter_1" data-toggle="collapse" class="opened">Loại sản phẩm</a>
+						<a href="#filter_1" data-toggle="collapse" class="opened">Product type</a>
 					</h4>
 					<div class="collapse show" id="filter_1">
 						<ul>
@@ -76,26 +76,26 @@
 								@if (User.Identity.IsAuthenticated)
 								{
 									<li>
-										<a asp-action="AddInFavorite" asp-controller="Cart" asp-route-id="@item.ProductId" data-ajax="true" data-ajax-success="addFavAlert" data-ajax-failure="addCartFailAlert" class="tooltip-1" data-toggle="tooltip" data-placement="left" title="Thêm vào yêu thích">
-											<i class="ti-heart"></i><span>Thêm vào yêu thích</span>
+										<a asp-action="AddInFavorite" asp-controller="Cart" asp-route-id="@item.ProductId" data-ajax="true" data-ajax-success="addFavAlert" data-ajax-failure="addCartFailAlert" class="tooltip-1" data-toggle="tooltip" data-placement="left" title="Add to Favourite list">
+											<i class="ti-heart"></i><span>Add to Favourite list</span>
 										</a>
 									</li>
 									<li>
-										<a asp-action="AddInCart" asp-controller="Cart" asp-route-id="@item.ProductId" data-ajax="true" data-ajax-success="addCartAlert" data-ajax-failure="addCartFailAlert" data-ajax-update="#mini-cart" class="tooltip-1" data-toggle="tooltip" data-placement="left" title="Thêm vào giỏ hàng">
-											<i class="ti-shopping-cart"></i><span>Thêm vào giỏ hàng</span>
+										<a asp-action="AddInCart" asp-controller="Cart" asp-route-id="@item.ProductId" data-ajax="true" data-ajax-success="addCartAlert" data-ajax-failure="addCartFailAlert" data-ajax-update="#mini-cart" class="tooltip-1" data-toggle="tooltip" data-placement="left" title="Add to Cart">
+											<i class="ti-shopping-cart"></i><span>Add to Cart</span>
 										</a>
 									</li>
 								}
 								else
 								{
 									<li>
-										<a data-ajax="true" data-ajax-success="loginFirstAlert" data-ajax-failure="addCartFailAlert" class="tooltip-1" data-toggle="tooltip" data-placement="left" title="Thêm vào yêu thích">
-											<i class="ti-heart"></i><span>Thêm vào yêu thích</span>
+										<a data-ajax="true" data-ajax-success="loginFirstAlert" data-ajax-failure="addCartFailAlert" class="tooltip-1" data-toggle="tooltip" data-placement="left" title="Add to Favourite list">
+											<i class="ti-heart"></i><span>Add to Favourite list</span>
 										</a>
 									</li>
 									<li>
-										<a asp-action="AddInCart" asp-controller="Cart" asp-route-id="@item.ProductId" data-ajax="true" data-ajax-success="addCartAlert" data-ajax-failure="addCartFailAlert" data-ajax-update="#mini-cart" class="tooltip-1" data-toggle="tooltip" data-placement="left" title="Thêm vào giỏ hàng">
-											<i class="ti-shopping-cart"></i><span>Thêm vào giỏ hàng</span>
+										<a asp-action="AddInCart" asp-controller="Cart" asp-route-id="@item.ProductId" data-ajax="true" data-ajax-success="addCartAlert" data-ajax-failure="addCartFailAlert" data-ajax-update="#mini-cart" class="tooltip-1" data-toggle="tooltip" data-placement="left" title="Add to Cart">
+											<i class="ti-shopping-cart"></i><span>Add to Cart</span>
 										</a>
 									</li>
 								}

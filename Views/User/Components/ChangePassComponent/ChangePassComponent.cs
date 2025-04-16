@@ -4,8 +4,8 @@ namespace Tennis.Views.User.Components.ChangePassComponent;
 
 public class ChangePassComponent : ViewComponent
 {
-	public IViewComponentResult Invoke()
-	{
-		return View();
-	}
+    public IViewComponentResult Invoke()
+    {
+        return View();
+    }
 }

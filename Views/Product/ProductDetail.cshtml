@@ -6,7 +6,7 @@
 <script src="https://unpkg.com/js-image-zoom@0.4.1/js-image-zoom.js" type="application/javascript"></script>
 <div class="container margin_30">
 	<div class="countdown_inner">
-		-20% Đợt giảm giá kết thúc sau
+		-20% Sale ends in
 		<div data-countdown="@DateTime.Now.AddHours(1).ToString("yyyy-MM-dd h:mm tt")" class="countdown"></div>
 	</div>
 
@@ -74,10 +74,10 @@
 			<div class="breadcrumbs">
 				<ul>
 					<li>
-						<a asp-action="Index" asp-controller="Home">Trang chủ</a>
+						<a asp-action="Index" asp-controller="Home">Home</a>
 					</li>
 					<li>
-						<a asp-action="Index" asp-controller="Product">Sản phẩm</a>
+						<a asp-action="Index" asp-controller="Product">Product</a>
 					</li>
 					<li>
 						<a>@Model.ProductName</a>
@@ -112,7 +112,7 @@
 				<div class="prod_options">
 					<div class="row">
 						<label class="col-xl-5 col-lg-5  col-md-6 col-6">
-							<strong>Số lượng</strong>
+							<strong>Quantity</strong>
 						</label>
 						<div class="col-xl-4 col-lg-5 col-md-6 col-6">
 							<div class="numbers-row">
@@ -134,7 +134,7 @@
 					<div class="col-lg-4 col-md-6">
 
 						<button type="submit" class="btn_1">
-							<i class="ti-shopping-cart"></i> Thêm vào giỏ hàng
+							<i class="ti-shopping-cart"></i>Add to Cart
 						</button>
 
 					</div>
@@ -146,13 +146,13 @@
 							@if (User.Identity.IsAuthenticated)
 							{
 								<a asp-action="AddInFavorite" asp-controller="Cart" asp-route-id="@Model.ProductId" data-ajax="true" data-ajax-success="addFavAlert" data-ajax-failure="addCartFailAlert">
-									<i class="ti-heart"></i><span>Thêm vào danh sách yêu thích</span>
+									<i class="ti-heart"></i><span>Add to Favourite list</span>
 								</a>
 							}
 							else
 							{
 								<a >
-									<i class="ti-heart"></i><span>Thêm vào danh sách yêu thích</span>
+									<i class="ti-heart"></i><span>Add to Favourite list</span>
 								</a>
 							}
 						</li>
@@ -170,10 +170,10 @@
 	<div class="container">
 		<ul class="nav nav-tabs" role="tablist">
 			<li class="nav-item">
-				<a id="tab-A" href="#pane-A" class="nav-link active" data-toggle="tab" role="tab">Mô tả sản phẩm</a>
+				<a id="tab-A" href="#pane-A" class="nav-link active" data-toggle="tab" role="tab">Product description</a>
 			</li>
 			<li class="nav-item">
-				<a id="tab-B" href="#pane-B" class="nav-link" data-toggle="tab" role="tab">Đánh giá</a>
+				<a id="tab-B" href="#pane-B" class="nav-link" data-toggle="tab" role="tab">Review</a>
 			</li>
 		</ul>
 	</div>
@@ -186,7 +186,7 @@
 				<div class="card-header" role="tab" id="heading-A">
 					<h5 class="mb-0">
 						<a class="collapsed" data-toggle="collapse" href="#collapse-A" aria-expanded="false" aria-controls="collapse-A">
-							Mô tả sản phẩm
+							Product description
 						</a>
 					</h5>
 				</div>
@@ -194,7 +194,7 @@
 					<div class="card-body">
 						<div class="row justify-content-between">
 							<div class="col-lg-3">
-								<h3>Hình ảnh sản phẩm</h3>
+								<h3>Product image</h3>
 
 								<div id="img-container">
 									<img src="~/Content/img/products/@Model.ProductImage" style="width: 400px; height: 300px">
@@ -210,30 +210,30 @@
 								</script>
 							</div>
 							<div class="col-lg-6">
-								<h3>Chi tiết</h3>
+								<h3>Details/h3>
 								<p>@Model.ProductDescription</p>
 							</div>
 
 							<div class="col-lg-3">
-								<h3>Thông tin chi tiết</h3>
+								<h3>Product information</h3>
 								<div class="table-responsive">
 									<table class="table table-sm table-striped">
 										<tbody>
 										<tr>
 											<td>
-												<strong>Tên sản phẩm</strong>
+												<strong>Product name</strong>
 											</td>
 											<td>@Model.ProductName</td>
 										</tr>
 										<tr>
 											<td>
-												<strong>Số lượng trong kho</strong>
+												<strong>Quantity in stock</strong>
 											</td>
 											<td>@Model.ProductAmount</td>
 										</tr>
 										<tr>
 											<td>
-												<strong>Giảm giá</strong>
+												<strong>Discount</strong>
 											</td>
 											<td>@Model.ProductDiscount % </td>
 										</tr>
@@ -251,7 +251,7 @@
 				<div class="card-header" role="tab" id="heading-B">
 					<h5 class="mb-0">
 						<a class="collapsed" data-toggle="collapse" href="#collapse-B" aria-expanded="false" aria-controls="collapse-B">
-							Đánh giá
+							Review
 						</a>
 					</h5>
 				</div>
@@ -263,7 +263,7 @@
 						<!-- /row -->
 					</div>
 					<p class="text-right">
-						<a asp-action="LeaveReview" asp-controller="Product" asp-route-id="@Model.ProductId" class="btn_1">Bình luận</a>
+						<a asp-action="LeaveReview" asp-controller="Product" asp-route-id="@Model.ProductId" class="btn_1">Comments</a>
 					</p>
 					<!-- /card-body -->
 				</div>
@@ -286,7 +286,7 @@
 				<div class="box">
 					<i class="ti-gift"></i>
 					<div class="justify-content-center">
-						<h3>Miễn phí vận chuyển</h3>
+						<h3>Free shipping</h3>
 						<p>For all oders over $99</p>
 					</div>
 				</div>
@@ -295,7 +295,7 @@
 				<div class="box">
 					<i class="ti-wallet"></i>
 					<div class="justify-content-center">
-						<h3>Thanh toán bảo mật</h3>
+						<h3>Secure Payment</h3>
 						<p>100% secure payment</p>
 					</div>
 				</div>
@@ -304,7 +304,7 @@
 				<div class="box">
 					<i class="ti-headphone-alt"></i>
 					<div class="justify-content-center">
-						<h3>24/7 Hổ trợ</h3>
+						<h3>Support 24/7</h3>
 						<p>Online top support</p>
 					</div>
 				</div>
