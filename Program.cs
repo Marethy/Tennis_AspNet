@@ -34,6 +34,13 @@ builder.Services.AddScoped<IUserManager, UserManager>();
 builder.Services.AddScoped<ITokenRepository, TokenRepository>();
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddTransient<IMailService, MailService>();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30); // thời gian session tồn tại
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
 
 // 💡 Authentication
 builder.Services.AddAuthentication("Signin") // <- scheme name
@@ -60,14 +67,16 @@ app.MapHub<AdminHub>("/hubs/adminHub");  // Map the hub endpoint
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
-
+app.UseSession();
 // 💡 Auth middlewares
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-     pattern: "{controller=User}/{action=Register}/{id?}");
-  //  pattern: "{area=Admin}/{controller=AdmOrder}/{action=Index}/{id?}");
+    // pattern: "{controller=User}/{action=Register}/{id?}");
+     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+    //pattern: "{area=Admin}/{controller=AdmOrder}/{action=Index}/{id?}");
 
 app.Run();
