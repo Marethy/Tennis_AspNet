@@ -119,20 +119,6 @@ builder.Services.AddAuthentication("Signin")
 
 builder.Services.AddAuthorization();
 
-// CORS (nếu cần thiết)
-builder.Services.AddCors(options =>
-{
-    options.AddDefaultPolicy(
-        policyBuilder =>
-        {
-            policyBuilder
-                .AllowAnyOrigin()
-                .AllowAnyHeader()
-                .AllowAnyMethod()
-                .AllowCredentials();
-        });
-});
-
 // Optional: load config settings
 var emailConfig = builder.Configuration.GetSection("MailSettings").Get<MailSettings>();
 var payOSSettings = builder.Configuration.GetSection("PayOSSettings").Get<PayOSProperties>();
