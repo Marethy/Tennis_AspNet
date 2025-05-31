@@ -30,9 +30,6 @@ _ReSharper*/
 # Dependency directories
 node_modules/
 
-# Publish output
-wwwroot/
-
 # Environment variables
 .env
 .env.*
