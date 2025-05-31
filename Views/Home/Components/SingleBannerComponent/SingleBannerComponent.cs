@@ -14,7 +14,7 @@ public class SingleBannerComponent : ViewComponent
 
 	public async Task<IViewComponentResult> InvokeAsync()
 	{
-		var obj = await _repo.GetByIdAsync(1);
+		var obj = await _repo.GetByIdAsync(4);
 		return View("SingleBannerComponent", obj);
 	}
 }
