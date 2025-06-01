@@ -18,6 +18,7 @@ public class Banner
 	[Range(0, 1)]
 	public int? ProductDiscount { get; set; }
 
+
 	[DisplayName("Giá")] public decimal? BannerPrice { get; set; }
 
 	[StringLength(200)]

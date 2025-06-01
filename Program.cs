@@ -1,28 +1,25 @@
+﻿using Tennis.Hubs;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
-using Tennis.Hubs;
 using Tennis.Interfaces;
 using Tennis.Models;
 using Tennis.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// DB
-builder.Services.AddDbContext<TennisWebMVCContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
-// Razor & View
 builder.Services.AddControllersWithViews();
+builder.Services.AddDbContext<TennisWebMVCContext>(options => options.UseSqlServer(
+    builder.Configuration.GetConnectionString("DefaultConnection")
+));
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
-
-// SignalR
-builder.Services.AddSignalR();
+builder.Services.AddSignalR(); 
 
 // Repositories
 builder.Services.AddScoped<IBannerRepository, BannerRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<ICartRepository, CartRepository>();
 builder.Services.AddScoped<IBlogRepository, BlogRepository>();
+builder.Services.AddScoped<IBannerRepository, BannerRepository>();
 builder.Services.AddScoped<IProductRatingRepository, ProductRatingRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
@@ -33,20 +30,17 @@ builder.Services.AddScoped<IFavoriteRepository, FavoriteRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserManager, UserManager>();
 builder.Services.AddScoped<ITokenRepository, TokenRepository>();
-
-// Mail
-builder.Services.AddTransient<IMailService, MailService>();
-
-// Session
 builder.Services.AddDistributedMemoryCache();
+builder.Services.AddTransient<IMailService, MailService>();
 builder.Services.AddSession(options =>
 {
-    options.IdleTimeout = TimeSpan.FromMinutes(30);
+    options.IdleTimeout = TimeSpan.FromMinutes(30); 
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
 
-// Authentication
+
+
 builder.Services.AddAuthentication("Signin")
     .AddCookie("Signin", options =>
     {
@@ -77,7 +71,9 @@ builder.Services.AddAuthentication("Signin")
                 return Task.CompletedTask;
             }
         };
-        options.LoginPath = new PathString("/User/Login");
+
+        // Set login paths for different user types
+        options.LoginPath = new PathString("/User/Login");  // For regular users
         options.LogoutPath = "/User/Logout";
         options.ReturnUrlParameter = "ReturnUrl";
         options.SlidingExpiration = true;
@@ -111,50 +107,80 @@ builder.Services.AddAuthentication("Signin")
                 return Task.CompletedTask;
             }
         };
-        options.LoginPath = new PathString("/Admin/AdmAccount/Login");
+
+        // Set login path for admin
+        options.LoginPath = new PathString("/Admin/AdmAccount/Login"); // For admin users
         options.LogoutPath = "/Admin/AdmAccount/Logout";
         options.ReturnUrlParameter = "ReturnUrl";
         options.SlidingExpiration = true;
     });
 
-builder.Services.AddAuthorization();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(10);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
 
-// CORS (nếu cần thiết)
+var emailConfig = builder.Configuration.GetSection("MailSettings").Get<MailSettings>();
+//builder.Services.AddSingleton(emailConfig);
+builder.Services.AddControllers();
+
+// signal R count number customer online
+builder.Services.AddSignalR();
+
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(
-        policyBuilder =>
+        builder =>
         {
-            policyBuilder
-                .AllowAnyOrigin()
+            builder.WithOrigins()
                 .AllowAnyHeader()
-                .AllowAnyMethod()
+                .WithMethods("GET", "POST")
                 .AllowCredentials();
         });
 });
 
-// Optional: load config settings
-var emailConfig = builder.Configuration.GetSection("MailSettings").Get<MailSettings>();
+//var vnPaySettings = builder.Configuration.GetSection("VnPaySettings").Get<VnPaySettings>();
+//builder.Services.AddSingleton(vnPaySettings);
 var payOSSettings = builder.Configuration.GetSection("PayOSSettings").Get<PayOSProperties>();
+//builder.Services.AddSingleton(payOSSettings);
 
 var app = builder.Build();
 
-// Middleware pipeline
+// Middlewares
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
+    // The default HSTS value is 30 days. Youg may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+app.MapHub<AdminHub>("/hubs/adminHub");  // Map the hub endpoint
 
-app.UseStatusCodePagesWithRedirects("/Home/Error?statuscode={0}");
+
+// handler error 404 page
+app.UseStatusCodePagesWithRedirects("/Home/Error?statuscode = {0}");
+
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
 app.UseRouting();
 app.UseSession();
+// 💡 Auth middlewares
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseAuthentication();
+
+app.UseSession();
+
+// belong to signal R
 app.UseCors();
+
+
+//app.MapControllerRoute(
+//    name: "Admin",
+//    pattern: "{area:exists}/{controller=AdmBlog}/{action=Index}/{id?}");
+
 
 app.MapAreaControllerRoute(
     "Admin",
@@ -162,10 +188,10 @@ app.MapAreaControllerRoute(
     "Admin/{controller=AdmAccount}/{action=Login}/{id?}");
 
 app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    "default",
+    "{controller=Home}/{action=Index}/{id?}");
 
-// SignalR Hubs
+
 app.MapHub<CustomerHub>("/hubs/customerCount");
 app.MapHub<AdminHub>("/hubs/adminHub");
 

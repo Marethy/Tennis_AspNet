@@ -12,8 +12,8 @@ using Tennis.Models;
 namespace Tennis.Migrations
 {
     [DbContext(typeof(TennisWebMVCContext))]
-    [Migration("20250412101927_initdb")]
-    partial class initdb
+    [Migration("20250528141857_int")]
+    partial class @int
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

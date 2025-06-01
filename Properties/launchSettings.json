@@ -2,12 +2,14 @@
   "profiles": {
     "http": {
       "commandName": "Project",
+      "dotnetRunMessages": true,
       "launchBrowser": true,
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_HTTPS_PORT": "7011"
       },
-      "dotnetRunMessages": true,
-      "applicationUrl": "http://localhost:5229"
+      // add the https URL here:
+      "applicationUrl": "http://localhost:5229;https://localhost:7011"
     },
     "https": {
       "commandName": "Project",
