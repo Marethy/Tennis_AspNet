@@ -2,24 +2,30 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using Tennis.Interfaces;
-using Tennis.Models;
 using Tennis.Repositories;
+using Tennis.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllersWithViews();
-builder.Services.AddDbContext<TennisWebMVCContext>(options => options.UseSqlServer(
-    builder.Configuration.GetConnectionString("DefaultConnection")
-));
-builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
-builder.Services.AddSignalR(); 
+// ─── Services ─────────────────────────────────────────────────────────────────
 
-// Repositories
+// Controllers + Views + Razor
+builder.Services.AddControllersWithViews()
+        .AddRazorRuntimeCompilation();
+
+// EF Core
+builder.Services.AddDbContext<TennisWebMVCContext>(opts =>
+    opts.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
+);
+
+// SignalR (only once)
+builder.Services.AddSignalR();
+
+// Repositories (scoped)
 builder.Services.AddScoped<IBannerRepository, BannerRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<ICartRepository, CartRepository>();
 builder.Services.AddScoped<IBlogRepository, BlogRepository>();
-builder.Services.AddScoped<IBannerRepository, BannerRepository>();
 builder.Services.AddScoped<IProductRatingRepository, ProductRatingRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
@@ -30,17 +36,20 @@ builder.Services.AddScoped<IFavoriteRepository, FavoriteRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserManager, UserManager>();
 builder.Services.AddScoped<ITokenRepository, TokenRepository>();
+
+// Caching + Session (only one AddSession call)
 builder.Services.AddDistributedMemoryCache();
-builder.Services.AddTransient<IMailService, MailService>();
 builder.Services.AddSession(options =>
 {
-    options.IdleTimeout = TimeSpan.FromMinutes(30); 
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
 
+// Mail service
+builder.Services.AddTransient<IMailService, MailService>();
 
-
+// Authentication (two cookie schemes: “Signin” and “AdminSignin”)
 builder.Services.AddAuthentication("Signin")
     .AddCookie("Signin", options =>
     {
@@ -55,25 +64,23 @@ builder.Services.AddAuthentication("Signin")
         };
         options.Events = new CookieAuthenticationEvents
         {
-            OnSignedIn = context =>
+            OnSignedIn = ctx =>
             {
-                Console.WriteLine("{0} - {1}: {2}", DateTime.Now, "OnSignedIn", context.Principal.Identity.Name);
+                Console.WriteLine($"{DateTime.Now} - OnSignedIn: {ctx.Principal.Identity.Name}");
                 return Task.CompletedTask;
             },
-            OnSigningOut = context =>
+            OnSigningOut = ctx =>
             {
-                Console.WriteLine("{0} - {1}: {2}", DateTime.Now, "OnSigningOut", context.HttpContext.User.Identity.Name);
+                Console.WriteLine($"{DateTime.Now} - OnSigningOut: {ctx.HttpContext.User.Identity.Name}");
                 return Task.CompletedTask;
             },
-            OnValidatePrincipal = context =>
+            OnValidatePrincipal = ctx =>
             {
-                Console.WriteLine("{0} - {1}: {2}", DateTime.Now, "OnValidatePrincipal", context.Principal.Identity.Name);
+                Console.WriteLine($"{DateTime.Now} - OnValidatePrincipal: {ctx.Principal.Identity.Name}");
                 return Task.CompletedTask;
             }
         };
-
-        // Set login paths for different user types
-        options.LoginPath = new PathString("/User/Login");  // For regular users
+        options.LoginPath = new PathString("/User/Login");
         options.LogoutPath = "/User/Logout";
         options.ReturnUrlParameter = "ReturnUrl";
         options.SlidingExpiration = true;
@@ -91,107 +98,81 @@ builder.Services.AddAuthentication("Signin")
         };
         options.Events = new CookieAuthenticationEvents
         {
-            OnSignedIn = context =>
+            OnSignedIn = ctx =>
             {
-                Console.WriteLine("{0} - {1}: {2}", DateTime.Now, "OnAdminSignedIn", context.Principal.Identity.Name);
+                Console.WriteLine($"{DateTime.Now} - OnAdminSignedIn: {ctx.Principal.Identity.Name}");
                 return Task.CompletedTask;
             },
-            OnSigningOut = context =>
+            OnSigningOut = ctx =>
             {
-                Console.WriteLine("{0} - {1}: {2}", DateTime.Now, "OnAdminSigningOut", context.HttpContext.User.Identity.Name);
+                Console.WriteLine($"{DateTime.Now} - OnAdminSigningOut: {ctx.HttpContext.User.Identity.Name}");
                 return Task.CompletedTask;
             },
-            OnValidatePrincipal = context =>
+            OnValidatePrincipal = ctx =>
             {
-                Console.WriteLine("{0} - {1}: {2}", DateTime.Now, "OnAdminValidatePrincipal", context.Principal.Identity.Name);
+                Console.WriteLine($"{DateTime.Now} - OnAdminValidatePrincipal: {ctx.Principal.Identity.Name}");
                 return Task.CompletedTask;
             }
         };
-
-        // Set login path for admin
-        options.LoginPath = new PathString("/Admin/AdmAccount/Login"); // For admin users
+        options.LoginPath = new PathString("/Admin/AdmAccount/Login");
         options.LogoutPath = "/Admin/AdmAccount/Logout";
         options.ReturnUrlParameter = "ReturnUrl";
         options.SlidingExpiration = true;
     });
 
-builder.Services.AddSession(options =>
-{
-    options.IdleTimeout = TimeSpan.FromMinutes(10);
-    options.Cookie.HttpOnly = true;
-    options.Cookie.IsEssential = true;
-});
-
-var emailConfig = builder.Configuration.GetSection("MailSettings").Get<MailSettings>();
-//builder.Services.AddSingleton(emailConfig);
-builder.Services.AddControllers();
-
-// signal R count number customer online
-builder.Services.AddSignalR();
-
-builder.Services.AddCors(options =>
-{
-    options.AddDefaultPolicy(
-        builder =>
-        {
-            builder.WithOrigins()
-                .AllowAnyHeader()
-                .WithMethods("GET", "POST")
-                .AllowCredentials();
-        });
-});
-
-//var vnPaySettings = builder.Configuration.GetSection("VnPaySettings").Get<VnPaySettings>();
-//builder.Services.AddSingleton(vnPaySettings);
-var payOSSettings = builder.Configuration.GetSection("PayOSSettings").Get<PayOSProperties>();
-//builder.Services.AddSingleton(payOSSettings);
+// (Optional) CORS policy for SignalR
+// builder.Services.AddCors(options =>
+// {
+//     options.AddPolicy("AllowAllSignalR", policy =>
+//     {
+//         policy.AllowAnyHeader()
+//               .AllowAnyMethod()
+//               .SetIsOriginAllowed(_ => true)
+//               .AllowCredentials();
+//     });
+// });
 
 var app = builder.Build();
 
-// Middlewares
+// ─── Middleware Pipeline ────────────────────────────────────────────────────────
+
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. Youg may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
-app.MapHub<AdminHub>("/hubs/adminHub");  // Map the hub endpoint
-
-
-// handler error 404 page
-app.UseStatusCodePagesWithRedirects("/Home/Error?statuscode = {0}");
-
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
+
+// Session (only once)
 app.UseSession();
-// 💡 Auth middlewares
+
+// Authentication → Authorization (only once each)
 app.UseAuthentication();
 app.UseAuthorization();
-app.UseAuthentication();
 
-app.UseSession();
+// (Optional) Apply CORS before mapping Hubs
+// app.UseCors("AllowAllSignalR");
 
-// belong to signal R
-app.UseCors();
+// ─── Endpoints ──────────────────────────────────────────────────────────────────
 
-
-//app.MapControllerRoute(
-//    name: "Admin",
-//    pattern: "{area:exists}/{controller=AdmBlog}/{action=Index}/{id?}");
-
-
+// Area routes for Admin
 app.MapAreaControllerRoute(
-    "Admin",
-    "Admin",
-    "Admin/{controller=AdmAccount}/{action=Login}/{id?}");
+    name: "Admin",
+    areaName: "Admin",
+    pattern: "Admin/{controller=AdmAccount}/{action=Login}/{id?}"
+);
 
+// Default MVC route
 app.MapControllerRoute(
-    "default",
-    "{controller=Home}/{action=Index}/{id?}");
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}"
+);
 
-
+// ─── SIGNALR HUBS ──────────────────────────────────────────────────────────────
+// Register each Hub exactly once
 app.MapHub<CustomerHub>("/hubs/customerCount");
 app.MapHub<AdminHub>("/hubs/adminHub");
 

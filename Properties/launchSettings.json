@@ -8,7 +8,6 @@
         "ASPNETCORE_ENVIRONMENT": "Development",
         "ASPNETCORE_HTTPS_PORT": "7011"
       },
-      // add the https URL here:
       "applicationUrl": "http://localhost:5229;https://localhost:7011"
     },
     "https": {

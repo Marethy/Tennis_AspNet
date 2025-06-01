@@ -1,6 +1,7 @@
 ﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Tennis.Data;
 using Tennis.Models;
 
 namespace Tennis.Areas.Admin.Controllers;

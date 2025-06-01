@@ -25,7 +25,7 @@ public class Product
 	[DisplayName("Số lượng")] public int ProductAmount { get; set; }
 
 	[DisplayName("Khuyến mãi")]
-	[Range(0, 1)]
+	[Range(0, 100)]
 	public int ProductDiscount { get; set; }
 
 	[DisplayName("Đánh giá")] public int ProductRating { get; set; }

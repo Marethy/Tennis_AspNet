@@ -1,7 +1,7 @@
 ﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Tennis.Models;
+using Tennis.ViewModels;
 
 namespace Tennis.Interfaces;
 

@@ -2,292 +2,346 @@
 <html lang="en">
 
 <head>
-	<meta charset="utf-8">
-	<meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Admin - Tennis World</title>
+    <meta content="Tennis World Administration Dashboard" name="description">
+    <meta content="tennis, admin, dashboard, management" name="keywords">
 
-	<title>Admin - Tennis World</title>
+    <!-- Favicons -->
+    <link rel="shortcut icon" href="~/content/img/logo_black.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" type="image/x-icon" href="~/Content/img/fast_food.png">
 
-	<meta content="" name="description">
-	<meta content="" name="keywords">
+    <!-- Google Fonts -->
+    <link href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
 
+    <!-- Vendor CSS Files -->
+    <link href="~/content/admin/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/content/admin/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="~/content/admin/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="~/content/admin/vendor/quill/quill.snow.css" rel="stylesheet">
+    <link href="~/content/admin/vendor/quill/quill.bubble.css" rel="stylesheet">
+    <link href="~/content/admin/vendor/remixicon/remixicon.css" rel="stylesheet">
+    <link href="~/content/admin/vendor/simple-datatables/style.css" rel="stylesheet">
 
+    <!-- Template Main CSS File -->
+    <link href="~/content/admin/css/style.css" rel="stylesheet">
 
+    <!-- Custom Admin Style -->
+    <style>
+        :root {
+            --primary-color: #0d6efd;
+            --secondary-color: #6c757d;
+            --success-color: #198754;
+            --sidebar-bg: #f8f9fa;
+        }
 
-	<!-- Favicons -->
-	<link rel="shortcut icon" href="~/content/img/logo_black.ico" type="image/x-icon">
-	<link rel="apple-touch-icon" type="image/x-icon" href="~/Content/img/fast_food.png">
+        .sidebar {
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            background-color: var(--sidebar-bg);
+        }
 
+        .nav-link.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 5px;
+        }
 
-	<!-- Google Fonts -->
+        .stats-card {
+            transition: all 0.3s;
+            border-radius: 10px;
+        }
 
-	<link href="https://fonts.gstatic.com" rel="preconnect">
-	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+            .stats-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            }
 
-	<!-- Vendor CSS Files -->
-	<link href="~/content/admin/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-	<link href="~/content/admin/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-	<link href="~/content/admin/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
-	<link href="~/content/admin/vendor/quill/quill.snow.css" rel="stylesheet">
-	<link href="~/content/admin/vendor/quill/quill.bubble.css" rel="stylesheet">
-	<link href="~/content/admin/vendor/remixicon/remixicon.css" rel="stylesheet">
-	<link href="~/content/admin/vendor/simple-datatables/style.css" rel="stylesheet">
+        .main-header {
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
 
-	<!-- Template Main CSS File -->
-	<link href="~/content/admin/css/style.css" rel="stylesheet">
+        .back-to-top {
+            background-color: var(--primary-color);
+        }
 
-
-	<!-- =======================================================
-	* Template Name: NiceAdmin - v2.3.1
-	* Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
-	* Author: BootstrapMade.com
-	* License: https://bootstrapmade.com/license/
-	======================================================== -->
+        .footer {
+            padding: 15px 0;
+            font-size: 0.9rem;
+        }
+    </style>
 </head>
 
 <body>
+    <!-- ======= Header ======= -->
+    <header id="header" class="header fixed-top d-flex align-items-center main-header">
+        <div class="d-flex align-items-center justify-content-between">
+            <i class="bi bi-list toggle-sidebar-btn"></i>
+            <a asp-action="Index" asp-controller="AdmHome" class="logo d-flex align-items-center">
+                <img src="~/content/img/logo_black.ico" alt="Tennis World Logo" height="36">
+                <span class="d-none d-lg-block ms-2">Tennis World</span>
+            </a>
+        </div><!-- End Logo -->
 
-<!-- ======= Header ======= -->
-<header id="header" class="header fixed-top d-flex align-items-center">
+        <nav class="header-nav ms-auto">
+            <ul class="d-flex align-items-center">
+                <li class="nav-item dropdown">
+                    <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
+                        <i class="bi bi-bell"></i>
+                        <span class="badge bg-primary badge-number">4</span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
+                        <li class="dropdown-header">
+                            Bạn có 4 thông báo mới
+                            <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">Xem tất cả</span></a>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li class="notification-item">
+                            <i class="bi bi-cart text-warning"></i>
+                            <div>
+                                <h4>Đơn hàng mới</h4>
+                                <p>Đơn hàng #12345 vừa được tạo</p>
+                                <p>30 phút trước</p>
+                            </div>
+                        </li>
+                    </ul>
+                </li><!-- End Notification Nav -->
 
-	<div class="d-flex align-items-center justify-content-between">
-		<i class="bi bi-list toggle-sidebar-btn"></i>
-		<a asp-action="Index" asp-controller="AdmHome" class="logo d-flex align-items-center">
-			<img src="assets/img/logo.png" alt="">
-			<span class="d-none d-lg-block">TennisWebMVC</span>
-		</a>
-	</div><!-- End Logo -->
+                <li class="nav-item dropdown pe-3">
+                    <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+                        <img src="~/content/admin/img/admin.jpg" alt="Profile" class="rounded-circle">
+                        <span class="d-none d-md-block dropdown-toggle ps-2">Admin</span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+                        <li class="dropdown-header">
+                            <h6>Admin Panel</h6>
+                            <span>Tennis World</span>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <a class="dropdown-item d-flex align-items-center" href="#">
+                                <i class="bi bi-person"></i>
+                                <span>Hồ sơ</span>
+                            </a>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <a class="dropdown-item d-flex align-items-center" href="#">
+                                <i class="bi bi-gear"></i>
+                                <span>Cài đặt</span>
+                            </a>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                            {
+                                <a class="dropdown-item d-flex align-items-center" asp-action="Logout" asp-controller="AdmAccount">
+                                    <i class="bi bi-box-arrow-right"></i>
+                                    <span>Đăng xuất</span>
+                                </a>
+                            }
+                        </li>
+                    </ul>
+                </li><!-- End Profile Nav -->
+            </ul>
+        </nav><!-- End Icons Navigation -->
+    </header><!-- End Header -->
+    <!-- ======= Sidebar ======= -->
+    <aside id="sidebar" class="sidebar">
+        <ul class="sidebar-nav" id="sidebar-nav">
+            <li class="nav-item">
+                <a class="nav-link" asp-action="Index" asp-controller="AdmHome">
+                    <i class="bi bi-grid"></i>
+                    <span>Trang chủ</span>
+                </a>
+            </li><!-- End Dashboard Nav -->
 
-	<nav class="header-nav ms-auto">
-		<ul class="d-flex align-items-center">
+            <li class="nav-item">
+                <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-cart3"></i><span>Quản lý đơn hàng</span><i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="components-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+                    <li>
+                        <a asp-action="Index" asp-controller="AdmOrder">
+                            <i class="bi bi-circle"></i><span>Đơn đặt hàng</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-action="Index" asp-controller="AdmOrderDetail">
+                            <i class="bi bi-circle"></i><span>Chi tiết đơn đặt hàng</span>
+                        </a>
+                    </li>
+                </ul>
+            </li><!-- End Orders Nav -->
 
-			<li class="nav-item dropdown pe-3">
-				<a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-					<img src="~/content/admin/img/admin.jpg" alt="Profile" class="rounded-circle">
-					<span class="d-none d-md-block dropdown-toggle ps-2">Admin</span>
-				</a><!-- End Profile Iamge Icon -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-people"></i><span>Khách hàng</span><i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="tables-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+                    <li>
+                        <a asp-controller="AdmCustomer" asp-action="Index">
+                            <i class="bi bi-circle"></i><span>Thông tin khách hàng</span>
+                        </a>
+                    </li>
+                </ul>
+            </li><!-- End Customers Nav -->
 
-				<ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
-					<li class="dropdown-header">
-						<h6>Admin area</h6>
-					</li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" data-bs-target="#charts-nav" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-box-seam"></i><span>Quản lý sản phẩm</span><i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="charts-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+                    <li>
+                        <a asp-action="Index" asp-controller="AdmProduct">
+                            <i class="bi bi-circle"></i><span>Quản lý sản phẩm</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-action="Index" asp-controller="AdmCategory">
+                            <i class="bi bi-circle"></i><span>Quản lý loại sản phẩm</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-action="Index" asp-controller="AdmProductRating">
+                            <i class="bi bi-circle"></i><span>Quản lý đánh giá sản phẩm</span>
+                        </a>
+                    </li>
+                </ul>
+            </li><!-- End Products Nav -->
 
-					<li>
-						<hr class="dropdown-divider">
-					</li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" data-bs-target="#icons-nav" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-file-earmark-text"></i><span>Quản lý bài viết</span><i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="icons-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+                    <li>
+                        <a asp-action="Index" asp-controller="AdmBlog">
+                            <i class="bi bi-circle"></i><span>Quản lý bài viết</span>
+                        </a>
+                    </li>
+                </ul>
+            </li><!-- End Blog Nav -->
 
-					<li>
-						@if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
-						{
-							<a class="dropdown-item d-flex align-items-center" asp-action="Logout" asp-controller="AdmAccount">
-								<i class="bi bi-box-arrow-right"></i>
-								<span>Đăng xuất</span>
-							</a>
-						}
-					</li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" data-bs-target="#icons-nav-new" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-images"></i><span>Quản lý banner</span><i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="icons-nav-new" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+                    <li>
+                        <a asp-action="Index" asp-controller="AdmBanner">
+                            <i class="bi bi-circle"></i><span>Quản lý banner</span>
+                        </a>
+                    </li>
+                </ul>
+            </li><!-- End Banner Nav -->
 
-				</ul><!-- End Profile Dropdown Items -->
-			</li><!-- End Profile Nav -->
+            <li class="nav-heading">Thống kê và báo cáo</li>
 
-		</ul>
-	</nav><!-- End Icons Navigation -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" data-bs-target="#stats-nav" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-graph-up"></i><span>Thống kê kinh doanh</span><i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="stats-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+                    <li>
+                        <a asp-action="RevenueStructure" asp-controller="AdmStatistics">
+                            <i class="bi bi-currency-dollar"></i>
+                            <span>Lợi nhuận</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-action="StaticProduct" asp-controller="AdmStatistics">
+                            <i class="bi bi-bar-chart-line"></i>
+                            <span>Phân tích sản phẩm</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-action="StaticProductAmount" asp-controller="AdmStatistics">
+                            <i class="bi bi-cart-check"></i>
+                            <span>Số lượng sản phẩm đã bán</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-action="StaticProductRevenue" asp-controller="AdmStatistics">
+                            <i class="bi bi-cash-stack"></i>
+                            <span>Lợi nhuận trên từng sản phẩm</span>
+                        </a>
+                    </li>
+                </ul>
+            </li><!-- End Statistics Nav -->
 
-</header><!-- End Header -->
-<!-- ======= Sidebar ======= -->
-<aside id="sidebar" class="sidebar">
+            <li class="nav-item">
+                <a class="nav-link" href="#main">
+                    <i class="bi bi-person-check"></i>
+                    <span>Số người online: <b id="customerCount" class="badge bg-success">0</b> người</span>
+                </a>
+            </li><!-- End Online Users Nav -->
+        </ul>
+    </aside><!-- End Sidebar-->
 
-			<a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
-				<i class="bi bi-menu-button-wide"></i><span>Quản lý đơn hàng</span><i class="bi bi-chevron-down ms-auto"></i>
-			</a>
-	<ul class="sidebar-nav" id="sidebar-nav">
+    <main id="main" class="main">
+        @RenderBody()
+    </main><!-- End #main -->
+    <!-- ======= Footer ======= -->
+    <footer id="footer" class="footer">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="copyright">
+                        &copy; Bản quyền <strong><span>Tennis World</span></strong> 2024
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="credits text-md-end">
+                        <span>Dev team: Trương Đắc Điền - Trần Thiện Khiêm - Nguyễn Quốc Huy</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer><!-- End Footer -->
 
-		<li class="nav-item">
-			<a class="nav-link" asp-action="Index" asp-controller="AdmHome">
-				<i class="bi bi-grid"></i>
-				<span>Trang chủ</span>
-			</a>
-		</li><!-- End Dashboard Nav -->
+    <a href="#" class="back-to-top d-flex align-items-center justify-content-center">
+        <i class="bi bi-arrow-up-short"></i>
+    </a>
 
-		<li class="nav-item">
-			<ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-				<li>
-					<a asp-action="Index" asp-controller="AdmOrder">
-						<i class="bi bi-circle"></i><span>Đơn đặt hàng</span>
-					</a>
-				</li>
-				<li>
-					<a asp-action="Index" asp-controller="AdmOrderDetail">
-						<i class="bi bi-circle"></i><span>Chi tiết đơn đặt hàng</span>
-					</a>
-				</li>
+    <!-- Vendor JS Files -->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/content/admin/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/content/admin/vendor/apexcharts/apexcharts.min.js"></script>
+    <script src="~/content/admin/vendor/chart.js/chart.min.js"></script>
+    <script src="~/content/admin/vendor/echarts/echarts.min.js"></script>
+    <script src="~/content/admin/vendor/quill/quill.min.js"></script>
+    <script src="~/content/admin/vendor/simple-datatables/simple-datatables.js"></script>
+    <script src="~/content/admin/vendor/tinymce/tinymce.min.js"></script>
+    <script src="~/content/admin/vendor/php-email-form/validate.js"></script>
 
-			</ul>
-		</li><!-- End Forms Nav -->
+    <!-- Library Scripts -->
+    <script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/lib/microsoft/signalr/dist/browser/signalr.min.js"></script>
 
-		<li class="nav-item">
-			<a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
-				<i class="bi bi-layout-text-window-reverse"></i><span>Khách hàng</span><i class="bi bi-chevron-down ms-auto"></i>
-			</a>
-			<ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-				<li>
-					<a asp-controller="AdmCustomer" asp-action="Index">
-						<i class="bi bi-circle"></i><span>Thông tin khách hàng</span>
-					</a>
-				</li>
-			</ul>
-		</li><!-- End Tables Nav -->
+    <!-- Template Main JS File -->
+    <script src="~/content/admin/js/main.js"></script>
+    <script src="~/js/imagepreview.js"></script>
+    <script src="~/js/admingetcustomercount.js"></script>
 
-		<li class="nav-item">
-			<a class="nav-link collapsed" data-bs-target="#charts-nav" data-bs-toggle="collapse" href="#">
-				<i class="bi bi-bar-chart"></i><span>Quản lý sản phẩm</span><i class="bi bi-chevron-down ms-auto"></i>
-			</a>
-			<ul id="charts-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-				<li>
-					<a asp-action="Index" asp-controller="AdmProduct">
-						<i class="bi bi-circle"></i><span>Quản lý sản phẩm</span>
-					</a>
-				</li>
-				<li>
-					<a asp-action="Index" asp-controller="AdmCategory">
-						<i class="bi bi-circle"></i><span>Quản lý loại sản phẩm</span>
-					</a>
-				</li>
-				<li>
-					<a asp-action="Index" asp-controller="AdmProductRating">
-						<i class="bi bi-circle"></i><span>Quản lý đánh giá sản phẩm</span>
-					</a>
-				</li>
-
-			</ul>
-		</li><!-- End Charts Nav -->
-
-		<li class="nav-item">
-			<a class="nav-link collapsed" data-bs-target="#icons-nav" data-bs-toggle="collapse" href="#">
-				<i class="bi bi-gem"></i><span>Quản lý bài viết</span><i class="bi bi-chevron-down ms-auto"></i>
-			</a>
-			<ul id="icons-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-				<li>
-					<a asp-action="Index" asp-controller="AdmBlog">
-						<i class="bi bi-circle"></i><span>Quản lý bài viết</span>
-					</a>
-				</li>
-			</ul>
-		</li><!-- End Icons Nav -->
-
-		<li class="nav-item">
-			<a class="nav-link collapsed" data-bs-target="#icons-nav-new" data-bs-toggle="collapse" href="#">
-				<i class="bi bi-gem"></i><span>Quản lý banner</span><i class="bi bi-chevron-down ms-auto"></i>
-			</a>
-			<ul id="icons-nav-new" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-				<li>
-					<a asp-action="Index" asp-controller="AdmBanner">
-						<i class="bi bi-circle"></i><span>Quản lý banner</span>
-					</a>
-				</li>
-			</ul>
-		</li><!-- End Icons Nav -->
-
-		<li class="nav-heading">Thông kê và báo cáo</li>
-
-		<li class="nav-item">
-			<a class="nav-link collapsed" data-bs-target="#icons-nav-new-1" data-bs-toggle="collapse" href="#">
-				<i class="bi bi-gem"></i><span>Thống kê kinh doanh</span><i class="bi bi-chevron-down ms-auto"></i>
-			</a>
-			<ul id="icons-nav-new-1" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-				<li>
-					<a class="nav-link collapsed" asp-action="RevenueStructure" asp-controller="AdmStatistics">
-						<i class="bi bi-person"></i>
-						<span>Lợi nhuận</span>
-					</a>
-				</li>
-				<li>
-					<a class="nav-link collapsed" asp-action="StaticProduct" asp-controller="AdmStatistics">
-						<i class="bi bi-person"></i>
-						<span>Phân tích sản phẩm</span>
-					</a>
-				</li>
-				<li>
-					<a class="nav-link collapsed" asp-action="StaticProductAmount" asp-controller="AdmStatistics">
-						<i class="bi bi-person"></i>
-						<span>Số lượng sản phẩm đã bán</span>
-					</a>
-				</li>
-				<li>
-					<a class="nav-link collapsed" asp-action="StaticProductRevenue" asp-controller="AdmStatistics">
-						<i class="bi bi-person"></i>
-						<span>Lợi nhuận trên từng sản phẩm</span>
-					</a>
-				</li>
-			</ul>
-		</li><!-- End Icons Nav -->
-
-
-		<li class="nav-item">
-			<a class="nav-link collapsed" href="#main">
-				<i class="bi bi-person"></i>
-				<span>Số người online: <b id="customerCount">0</b> người</span>
-			</a>
-		</li><!-- End Profile Page Nav -->
-	</ul>
-
-</aside><!-- End Sidebar-->
-<main class="main" id="main">
-	@RenderBody()
-</main><!-- End #main -->
-<!-- ======= Footer ======= -->
-<footer id="footer" class="footer">
-	<div class="copyright">
-		&copy; Bản quyền
-		<strong>
-			<span>Tennis World</span>
-		</strong>
-	</div>
-	<div class="credits">
-
-		<span>© 2024 Tennis World - Dev team: Trương Đắc Điền - Trần Thiện Khiêm - Nguyễn Quốc Huy </span>
-
-	</div>
-</footer><!-- End Footer -->
-
-<a href="#" class="back-to-top d-flex align-items-center justify-content-center">
-	<i class="bi bi-arrow-up-short"></i>
-</a>
-
-
-<!-- Vendor JS Files -->
-<script src="~/content/admin/vendor/apexcharts/apexcharts.min.js"></script>
-<script src="~/content/admin/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="~/content/admin/vendor/chart.js/chart.min.js"></script>
-<script src="~/content/admin/vendor/echarts/echarts.min.js"></script>
-<script src="~/content/admin/vendor/quill/quill.min.js"></script>
-<script src="~/content/admin/vendor/simple-datatables/simple-datatables.js"></script>
-<script src="~/content/admin/vendor/tinymce/tinymce.min.js"></script>
-<script src="~/content/admin/vendor/php-email-form/validate.js"></script>
-
-<!-- Template Main JS File -->
-<script src="~/content/admin/js/main.js"></script>
-<script src="~/js/imagepreview.js"></script>
-
-<!-- Library Script -->
-<script src="~/lib/jquery/dist/jquery.min.js"></script>
-<script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.min.js"></script>
-<script src="~/lib/microsoft/signalr/dist/browser/signalr.min.js"></script>
-
-<!-- Tiny -->
-<script src="https://cdn.tiny.cloud/1/xekc15gke11qin6cwkvv4jha5qamongkxqxqkige4s3m32yr/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
-<script>
-		tinymce.init({
-			menubar: false,
-			toolbar: false,
-			statusbar: false,
-			selector: "textarea",
-			plugins: [
-				"insertdatetime",
-				"autoresize"
-			]
-		});
-	</script>
-
-<script src="~/js/admingetcustomercount.js"></script>
+    <!-- TinyMCE Configuration -->
+    <script src="https://cdn.tiny.cloud/1/xekc15gke11qin6cwkvv4jha5qamongkxqxqkige4s3m32yr/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+    <script>
+        tinymce.init({
+            menubar: false,
+            toolbar: "undo redo | formatselect | bold italic | alignleft aligncenter alignright | bullist numlist | link image",
+            statusbar: false,
+            selector: "textarea",
+            plugins: [
+                "advlist autolink lists link image",
+                "charmap print preview anchor",
+                "searchreplace visualblocks code",
+                "insertdatetime media table paste",
+                "autoresize"
+            ]
+        });
+    </script>
 </body>
-
 </html>

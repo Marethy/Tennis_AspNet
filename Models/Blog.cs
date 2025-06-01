@@ -15,7 +15,7 @@ public class Blog
 
 	[DisplayName("Nội dung")]
 	public string? BlogContent { get; set; }
-
+		
 	[DisplayName("Hình ảnh")]
 	public string? BlogImage { get; set; }
 

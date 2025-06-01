@@ -1,4 +1,4 @@
-﻿using Tennis.Models;
+﻿using Tennis.ViewModels;
 
 namespace Tennis.Interfaces;
 

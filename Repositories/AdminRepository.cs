@@ -3,8 +3,10 @@
 using System.Security.Cryptography;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
+using Tennis.Data;
 using Tennis.Interfaces;
 using Tennis.Models;
+using Tennis.ViewModels;
 
 public class AdminRepository(TennisWebMVCContext context, IConfiguration configuration)
     : IAdminRepository
