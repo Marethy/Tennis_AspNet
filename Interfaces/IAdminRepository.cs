@@ -1,6 +1,6 @@
 ﻿namespace Tennis.Interfaces;
 
-using Tennis.Models;
+using Tennis.ViewModels;
 
 public interface IAdminRepository
 {

@@ -10,17 +10,16 @@ public class Banner
 	[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 	public int BannerId { get; set; }
 
-	[StringLength(50)]
 	[DisplayName("Tên")]
 	public string? BannerName { get; set; }
 
 	[DisplayName("Khuyến mãi")]
-	[Range(0, 1)]
-	public int? ProductDiscount { get; set; }
+    [Range(0, 100)]
+    public int? ProductDiscount { get; set; }
+
 
 	[DisplayName("Giá")] public decimal? BannerPrice { get; set; }
 
-	[StringLength(200)]
 	[DisplayName("Nội dung")]
 	public string? BannerDescription { get; set; }
 

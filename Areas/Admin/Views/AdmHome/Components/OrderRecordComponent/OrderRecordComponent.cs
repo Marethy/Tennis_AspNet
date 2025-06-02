@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Tennis.Models;
+using Tennis.Data;
 
 namespace Tennis.Areas.Admin.Views.AdmHome.Components.OrderRecordComponent;
 

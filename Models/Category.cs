@@ -6,19 +6,19 @@ namespace Tennis.Models;
 
 public class Category
 {
-	[Key]
-	[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-	public int CategoryId { get; set; }
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public int CategoryId { get; set; }
 
-	[Required]
-	[StringLength(50)]
-	[DisplayName("Tên loại")]
-	public string CategoryName { get; set; }
+    [Required]
+    [StringLength(50)]
+    [DisplayName("Tên loại")]
+    public string CategoryName { get; set; }
 
-	[DataType(DataType.Date)]
-	[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-	[DisplayName("Ngày khởi tạo")]
-	public DateTime CategoryDateCreated { get; set; } = DateTime.Now;
+    [DataType(DataType.Date)]
+    [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+    [DisplayName("Ngày khởi tạo")]
+    public DateTime CategoryDateCreated { get; set; } = DateTime.Now;
 
-	public ICollection<Product> Products { get; set; }
+    public ICollection<Product> Products { get; set; } = new List<Product>();
 }

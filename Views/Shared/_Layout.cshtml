@@ -7,7 +7,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<meta name="description" content="">
 	<meta name="author" content="Ansonika">
-	<title>Tennis World </title>
+	<title>Tennis World - Hệ Thống Shop Tennis Chuyên Nghiệp Việt Nam</title>
 	<!-- Favicons-->
 	<link rel="shortcut icon" href="~/content/img/logo_black.ico" type="image/x-icon">
 	<link rel="apple-touch-icon" type="image/x-icon" href="~/Content/img/fast_food.png">
@@ -43,12 +43,12 @@
 	<!-- Google tag (gtag.js) -->
 	<script async src="https://www.googletagmanager.com/gtag/js?id=G-NC52P2K4ZL"></script>
 	<script>
-	  window.dataLayer = window.dataLayer || [];
-	  function gtag(){dataLayer.push(arguments);}
-	  gtag('js', new Date());
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
 
-	  gtag('config', 'G-NC52P2K4ZL');
-	</script>
+      gtag('config', 'G-NC52P2K4ZL');
+    </script>
 	<meta name="google-site-verification" content="_HHMaI--v7JdLejSbwPvTsg8z1_OgK6FBsm4TpCiCPA"/>
 </head>
 
@@ -72,7 +72,7 @@
 					<div id="logo">
 						<a asp-action="Index" asp-controller="Home"
 						   style="color: white; font-size: 20px; font-family: Century Gothic, Arial, Tahoma, Serif;">
-							<img src="~/Content/img/logo.png" alt="" height="70" width="70"><b>Ăn Vặt Food</b>
+							<img src="~/Content/img/logo.png" alt="" height="60" width="60"><b>Tennis World</b>
 						</a>
 					</div>
 				</div>
@@ -88,26 +88,11 @@
 					<div class="main-menu">
 						<div id="header_menu">
 							<a asp-action="Index" asp-controller="Home">
-								<img src="~/Content/img/Bình Định Food-black.png" alt="" width="300">
+								<img src="~/Content/img/logo_black.png" alt="" width="300">
 							</a>
 							<a href="javascript:void(0);" class="open_close" id="close_in">
 								<i class="ti-close"></i>
-			one d-sm-none d-none">
-											<div class="banner_menu">
-												<a>
-													<img src="~/Content/img/banner_menu.jpg" width="400" height="550"
-														 alt="" class="img-fluid lazy">
-												</a>
-											</div>
-										</div>
-									</div>
-									<!-- /row -->
-								</div>
-								<!-- /menu-wrapper -->
-							</li>
-							<li>
-								<a asp-action="Index" asp-controller="Blog">Bài viết</a>
-							</li>				</a>
+							</a>
 						</div>
 						<ul>
 							<li class="header_menu">
@@ -119,7 +104,22 @@
 									<div class="row small-gutters">
 										@await Component.InvokeAsync("HeaderCategoryComponent")
 
-										<div class="col-lg-3 d-xl-block d-lg-block d-md-n
+										<div class="col-lg-3 d-xl-block d-lg-block d-md-none d-sm-none d-none">
+											<div class="banner_menu">
+												<a>
+													<img src="~/Content/img/banners/banner_menu.jpg" width="400" height="550"
+													     alt="" class="img-fluid lazy">
+												</a>
+											</div>
+										</div>
+									</div>
+									<!-- /row -->
+								</div>
+								<!-- /menu-wrapper -->
+							</li>
+							<li>
+								<a asp-action="Index" asp-controller="Blog">Bài viết</a>
+							</li>
 							<li>
 								<a asp-action="Help" asp-controller="Home">Trợ giúp</a>
 							</li>
@@ -213,7 +213,7 @@
 										<div class="hamburger-inner"></div>
 									</div>
 								</div>
-								Loại sản phẩm 
+								Loại sản phẩm
 							</a>
 						</li>
 					</ul>
@@ -287,7 +287,7 @@
 					<div id="newsletter">
 						<div class="form-group">
 							<input type="email" name="email_newsletter" id="email_newsletter"
-								   class="form-control" placeholder="Your email">
+							       class="form-control" placeholder="Your email">
 							<button type="submit" id="submit-newsletter">
 								<i class="ti-angle-double-right"></i>
 							</button>
@@ -358,14 +358,14 @@
 						<a asp-action="Index" asp-controller="Home">Luật</a>
 					</li>
 					<li>
-						<span>© 2024 FoodWebMVC - Dev team: Trương Đắc Điền - Trần Thiện Khiêm - Nguyễn Quốc Huy</span>
+						<span>© 2025 TennisWebMVC - Dev team: Trần Thiện Khiêm - Nguyễn Quốc Huy - Trương Đắc Điền</span>
 					</li>
 				</ul>
 			</div>
 			<div style="color: white">
 				&copy; Bản quyền
 				<strong>
-					<span>Ăn Vặt Food</span>
+					<span>Tennis World</span>
 				</strong>. Đã đăng ký Bản quyền
 				<br/>
 				<p>Đang có <strong id="customerCount">0</strong> khách hàng đang online</p>
@@ -392,13 +392,13 @@
 <script src="~/lib/microsoft/signalr/dist/browser/signalr.min.js"></script>
 <script src="~/js/customernumcount.js"></script>
 <script>
-		$(document).ready(function () {
-			'use strict';
-			$.cookieBar({
-				fixed: true
-			});
-		});
-	</script>
+        $(document).ready(function () {
+            'use strict';
+            $.cookieBar({
+                fixed: true
+            });
+        });
+    </script>
 <script src="//code.tidio.co/incvhb7bukkdgzpkw5m28i383htztlrb.js" async></script>
 
 </body>

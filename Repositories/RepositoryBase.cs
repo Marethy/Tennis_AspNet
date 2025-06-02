@@ -1,7 +1,7 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
+using Tennis.Data;
 using Tennis.Interfaces;
-using Tennis.Models;
 
 namespace Tennis.Repositories;
 
