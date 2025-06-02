@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Tennis.Data;     // namespace chứa TennisWebMVCContext
 using Tennis.Models;
+using Tennis.Data;
 
 namespace Tennis.Areas.Admin.Controllers
 {
@@ -20,8 +20,8 @@ namespace Tennis.Areas.Admin.Controllers
         public async Task<IActionResult> Index()
         {
             var orders = await _context.Orders
-                               .Include(o => o.Customer)
-                               .ToListAsync();
+                              .Include(o => o.Customer)
+                              .ToListAsync();
             return View(orders);
         }
 
@@ -31,17 +31,20 @@ namespace Tennis.Areas.Admin.Controllers
             if (id == null) return NotFound();
 
             var order = await _context.Orders
-                                .Include(o => o.Customer)
-                                .FirstOrDefaultAsync(m => m.OrderId == id);
-            if (order == null) return NotFound();
+                              .Include(o => o.Customer)
+                              .Include(o => o.OrderDetails)
+                              .FirstOrDefaultAsync(o => o.OrderId == id);
 
+            if (order == null) return NotFound();
             return View(order);
         }
 
         // GET: Admin/AdmOrder/Create
         public IActionResult Create()
         {
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "Name");
+            ViewData["CustomerId"] = new SelectList(
+                _context.Customers.Select(c => new { c.CustomerId, c.CustomerFullName }),
+                "CustomerId", "Name");
             return View();
         }
 
@@ -57,7 +60,9 @@ namespace Tennis.Areas.Admin.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "Name", order.CustomerId);
+            ViewData["CustomerId"] = new SelectList(
+                _context.Customers.Select(c => new { c.CustomerId, c.CustomerFullName }).ToList(),
+                "CustomerId", "Name", order.CustomerId);
             return View(order);
         }
 
@@ -65,83 +70,69 @@ namespace Tennis.Areas.Admin.Controllers
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null) return NotFound();
-            if (_context.Orders == null) return NotFound();
 
-            var order = await _context.Orders.FindAsync(id);
-            if (order == null) return NotFound();
+            // Lấy entity gốc, có sẵn CustomerId, OrderDetails
+            var orderInDb = await _context.Orders
+                                  .Include(o => o.OrderDetails)
+                                  .FirstOrDefaultAsync(o => o.OrderId == id);
+            if (orderInDb == null) return NotFound();
 
-            // Tạo dropdown cho CustomerId
+            // Tạo dropdown để show tên khách (nếu bạn muốn hiển thị)
             ViewData["CustomerId"] = new SelectList(
-                await _context.Customers
-                    .Select(c => new { c.CustomerId, c.CustomerFullName })
-                    .ToListAsync(),
-                "CustomerId",
-                "Name",
-                order.CustomerId);
+                _context.Customers.Select(c => new { c.CustomerId, c.CustomerFullName }).ToList(),
+                "CustomerId", "Name", orderInDb.CustomerId);
 
-            return View(order);
+            return View(orderInDb);
         }
 
         // POST: Admin/AdmOrder/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id,
-            [Bind("OrderId,DayOrder,DayDelivery,PaidState,DeliveryState,TotalMoney,CustomerId")] Order order)
+            [Bind("OrderId,DayOrder,DayDelivery,PaidState,DeliveryState,TotalMoney")] Order postedOrder)
         {
-            if (id != order.OrderId)
+            if (id != postedOrder.OrderId)
                 return NotFound();
 
-            if (ModelState.IsValid)
+         
+
+            // 1) Lấy entity gốc từ DB
+            var orderInDb = await _context.Orders
+                                  .Include(o => o.OrderDetails)
+                                  .FirstOrDefaultAsync(o => o.OrderId == id);
+            if (orderInDb == null)
+                return NotFound();
+
+            // 2) Gán lại từng trường được edit
+            orderInDb.DayOrder = postedOrder.DayOrder;
+            orderInDb.DayDelivery = postedOrder.DayDelivery;
+            orderInDb.PaidState = postedOrder.PaidState;
+            orderInDb.DeliveryState = postedOrder.DeliveryState;
+            orderInDb.TotalMoney = postedOrder.TotalMoney;
+            // → KHÔNG động gì đến orderInDb.CustomerId hoặc orderInDb.OrderDetails
+
+            try
             {
-                try
-                {
-                    // Cập nhật toàn bộ 7 trường mà bạn đã bind:
-                    _context.Update(order);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!OrderExists(order.OrderId))
-                        return NotFound();
-                    else
-                        throw;
-                }
-                catch (DbUpdateException ex)
-                {
-                    // Nếu vẫn vi phạm FK (dù đã bind CustomerId hợp lệ), bạn có thể log ex.InnerException
-                    ModelState.AddModelError("", "Cập nhật thất bại do ràng buộc cơ sở dữ liệu.");
-                    // Giữ lại dropdown
-                    ViewData["CustomerId"] = new SelectList(
-                        await _context.Customers
-                            .Select(c => new { c.CustomerId, c.CustomerFullName })
-                            .ToListAsync(),
-                        "CustomerId",
-                        "Name",
-                        order.CustomerId);
-                    return View(order);
-                }
-                return RedirectToAction(nameof(Index));
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!_context.Orders.Any(e => e.OrderId == id))
+                    return NotFound();
+                throw;
             }
 
-            // Nếu ModelState không hợp lệ (ví dụ nhập thiếu ngày hoặc chưa chọn khách), trả lại dropdown
-            ViewData["CustomerId"] = new SelectList(
-                await _context.Customers
-                    .Select(c => new { c.CustomerId, c.CustomerFullName })
-                    .ToListAsync(),
-                "CustomerId",
-                "Name",
-                order.CustomerId);
-            return View(order);
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Admin/AdmOrder/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Orders == null) return NotFound();
+            if (id == null) return NotFound();
 
             var order = await _context.Orders
-                                .Include(o => o.Customer)
-                                .FirstOrDefaultAsync(m => m.OrderId == id);
+                              .Include(o => o.Customer)
+                              .FirstOrDefaultAsync(o => o.OrderId == id);
             if (order == null) return NotFound();
 
             return View(order);
@@ -152,7 +143,6 @@ namespace Tennis.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Orders == null) return Problem("Entity set 'TennisWebMVCContext.Orders' is null.");
             var order = await _context.Orders.FindAsync(id);
             if (order != null)
             {
