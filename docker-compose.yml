@@ -1,0 +1,15 @@
+﻿
+services:
+  tennisapp:
+    build:
+      context: .          
+      dockerfile: Dockerfile
+    image: tenniswebmvc:latest
+    container_name: tennisapp
+    environment:
+      ConnectionStrings__TennisWebMVCContext: "Server=tcp:azuredbsql.database.windows.net,1433;Initial Catalog=TennisDB;Persist Security Info=False;User ID=<sql-admin-user>;Password=<sql-password>;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
+      ASPNETCORE_ENVIRONMENT: "Production"
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+
