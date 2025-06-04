@@ -28,6 +28,7 @@
   <ItemGroup>
     <Folder Include="Areas\Admin\Data\" />
     <Folder Include="Areas\Admin\Views\AdmStatistics\Components\" />
+    <Folder Include="docs\screenshots\" />
   </ItemGroup>
 
 </Project>
