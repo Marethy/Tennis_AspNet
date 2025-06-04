@@ -49,7 +49,7 @@
 			<div class="step last">
 				<h3>Thông tin khách hàng</h3>
 				<div class="box_general summary">
-					<form asp-action="Order" method="post">
+					<form id="orderForm" asp-action="Order" method="post">
 						<ul>
 							<li class="clearfix">
 								<em>
@@ -95,11 +95,47 @@
 							</li>
 						</ul>
 						<ul>
-							<span>@ViewBag.ErrorMessage</span>
+							@if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+							{
+								<span class="text-danger">@ViewBag.ErrorMessage</span>
+							}
 						</ul>
 						<div class="total clearfix">TỔNG TIỀN <span>@ViewData["TotalMoney"] Đ</span></div>
 						<button type="submit" class="btn_1 full-width">Đồng ý và Thanh toán</button>
 					</form>
+					<script>
+						document.getElementById("orderForm").addEventListener("submit", async function (e) {
+							e.preventDefault(); // Ngăn form submit truyền thống
+
+							const form = this;
+							const formData = new FormData(form);
+
+							try {
+								const response = await fetch("/Cart/Order", {
+									method: "POST",
+									body: formData
+								});
+
+								if (!response.ok) {
+									throw new Error("Lỗi khi gửi form!");
+								}
+
+								const data = await response.json();
+
+								if (data.redirectUrl) {
+									window.location.href = data.redirectUrl; // Chuyển hướng nếu có link
+								} else if (data.success) {
+									alert("Đặt hàng thành công!");
+									window.location.href = "/"; // Redirect trang chủ nếu không dùng PayOS
+								} else {
+									alert(data.message || "Có lỗi xảy ra khi đặt hàng.");
+								}
+							} catch (error) {
+								console.error("Lỗi khi xử lý đơn hàng:", error);
+								alert("Có lỗi xảy ra. Vui lòng thử lại sau.");
+							}
+						});
+					</script>
 				</div>
 				<!-- /box_general -->
 			</div>

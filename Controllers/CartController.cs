@@ -41,34 +41,33 @@ public class CartController : Controller
 		_configuration = configuration;
 	}
 
-	private async void PayOSPayment(List<ItemData> list, int orderId)
+	private async Task<string> PayOSPayment(List<ItemData> list, int orderId)
 	{
-		var payOSProperties = new PayOSProperties();
-		payOSProperties.clientId = _configuration["PayOSSettings:ClientId"];
-		payOSProperties.apiKey = _configuration["PayOSSettings:ApiKey"];
-		payOSProperties.checksumKey = _configuration["PayOSSettings:ChecksumKey"];
+		var payOSProperties = new PayOSProperties
+		{
+			clientId = _configuration["PayOSSettings:ClientId"],
+			apiKey = _configuration["PayOSSettings:ApiKey"],
+			checksumKey = _configuration["PayOSSettings:ChecksumKey"]
+		};
 		var payOS = new PayOS(payOSProperties.clientId, payOSProperties.apiKey, payOSProperties.checksumKey);
 
-		var noidung = "THANH TOAN AN VAT FOOD";
-		// Lấy thời gian Unix timestamp (mili giây)
-		//long unixTimeMilliseconds = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
-		//int unixTimestampPart = (int)(unixTimeMilliseconds % 10000); // Lấy 4 chữ số cuối															 
-		//var orderID = orderId * 10000 + unixTimestampPart;// Kết hợp số hóa đơn và phần cuối của Unix timestamp
-		var tongGiaTien = list.Sum(item => item.price * item.quantity);
-		var baseUrl = _configuration["AppSettings:BaseUrl"];
+		var noidung = "THANH TOAN TENNIS WORLD";
+		long unixTimeMilliseconds = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+		int unixTimestampPart = (int)(unixTimeMilliseconds % 10000);
+		var orderID = orderId * 10000 + unixTimestampPart;
 
-		PaymentData paymentData = new PaymentData(orderId, tongGiaTien, noidung, list, baseUrl, baseUrl);
+		var tongGiaTien = list.Sum(item => item.price * item.quantity);
+		var paymentData = new PaymentData(
+			orderID,
+			tongGiaTien,
+			noidung,
+			list,
+			"https://tenniswebmvc-abd2d9hmbvbye3ct.southeastasia-01.azurewebsites.net/Cart/PayOSResult", // returnUrl
+			"https://tenniswebmvc-abd2d9hmbvbye3ct.southeastasia-01.azurewebsites.net/Cart/PayOSResult"  // cancelUrl
+		);
 
 		CreatePaymentResult createPayment = await payOS.createPaymentLink(paymentData);
-
-		var linkCheckOut = createPayment.checkoutUrl;
-		log.InfoFormat("PAYOS URL: {0}", linkCheckOut);
-		Process.Start(new ProcessStartInfo
-		{
-			FileName = @"C:\Program Files\Google\Chrome\Application\chrome.exe",
-			Arguments = linkCheckOut,
-			UseShellExecute = true
-		});
+		return createPayment.checkoutUrl;
 	}
 
 	public async Task<IActionResult> PayOSResult()
@@ -79,15 +78,20 @@ public class CartController : Controller
 			var status = HttpContext.Request.Query["status"];
 			var orderCode = HttpContext.Request.Query["orderCode"];
 
-			// Kiểm tra trạng thái giao dịch
-			if (status == "PAID" && !string.IsNullOrEmpty(orderCode))
+			if (!string.IsNullOrEmpty(orderCode) && int.TryParse(orderCode, out int orderId))
 			{
-				//var orderCodeString = orderCode.ToString();
-				//var shortOrderCode = orderCodeString.Substring(0, orderCodeString.Length - 4); // Bỏ 4 số cuối
-				var orderId = Convert.ToInt32(orderCode);
+				// Lấy orderId gốc bằng cách bỏ 4 số cuối
+				orderId = orderId / 10000;
 
-				await _orderRepo.UpdatePaymentState(orderId);
-				return RedirectToAction("Index", "Home");
+				if (status == "PAID")
+				{
+					await _orderRepo.UpdatePaymentState(orderId);
+					return RedirectToAction("Confirm", "Cart");
+				}
+				else if (status == "CANCELLED")
+				{
+					return RedirectToAction("Order", "Cart", new { orderFailed = true });
+				}
 			}
 		}
 
@@ -390,57 +394,68 @@ public class CartController : Controller
 	}
 
 	[HttpPost]
-	public async Task Order(IFormCollection form)
+	public async Task<IActionResult> Order(IFormCollection form)
 	{
-		if (User.Identity.IsAuthenticated && User.IsInRole("Customer"))
+		if (!User.Identity.IsAuthenticated || !User.IsInRole("Customer"))
 		{
-			var totalMoney = TotalMoney() + shippingCost;
+			return Json(new { redirectUrl = Url.Action("Login", "User") });
+		}
 
-			List<Item> listCart = _cartRepo.Get(HttpContext.Session);
-			List<ItemData> listData = new List<ItemData>();
+		List<Item> listCart = _cartRepo.Get(HttpContext.Session);
+		if (listCart.Count == 0)
+		{
+			return Json(new { message = "Giỏ hàng trống!", redirectUrl = Url.Action("Index", "Cart") });
+		}
 
-			var id = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
+		var totalMoney = TotalMoney() + shippingCost;
+		var id = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
+		var or = new Order
+		{
+			CustomerId = id,
+			DayOrder = DateTime.Now,
+			DayDelivery = DateTime.Now.AddDays(3),
+			PaidState = false,
+			DeliveryState = false,
+			TotalMoney = totalMoney
+		};
 
-			var or = new Order();
-			or.CustomerId = id;
-			or.DayOrder = DateTime.Now;
-			or.DayDelivery = DateTime.Now.AddDays(3);
-			or.PaidState = false;
-			// build payment momo or vnpay
-			or.DeliveryState = false;
-			or.TotalMoney = totalMoney;
-			await _orderRepo.AddAsync(or);
-			await _orderRepo.SaveAsync();
+		await _orderRepo.AddAsync(or);
+		await _orderRepo.SaveAsync();
 
-			var detail = new OrderDetail();
-			foreach (var item in listCart)
+		foreach (var item in listCart)
+		{
+			var detail = new OrderDetail
 			{
-				detail.OrderId = or.OrderId;
-				detail.ProductId = item.Product.ProductId;
-				detail.Quantity = item.Quantity;
-				detail.UnitPrice = Convert.ToDecimal(item.Product.ProductPrice);
-				await _productRepo.UpdateAmount(item.Product.ProductId);
-				await _orderDetailRepo.AddAsync(detail);
-				await _orderDetailRepo.SaveAsync();
-			}
+				OrderId = or.OrderId,
+				ProductId = item.Product.ProductId,
+				Quantity = item.Quantity,
+				UnitPrice = Convert.ToDecimal(item.Product.ProductPrice)
+			};
+			await _productRepo.UpdateAmount(item.Product.ProductId);
+			await _orderDetailRepo.AddAsync(detail);
+		}
+		await _orderDetailRepo.SaveAsync();
 
-			var ship = new ItemData("Vận chuyển", 1, Convert.ToInt32(shippingCost));
-			listData.Add(ship);
-			foreach (var itemD in listCart)
-			{
-				var nameD = detail.Product.ProductName;
-				var quantityD = itemD.Quantity;
-				var moneyD = Convert.ToInt32(itemD.Product.ProductPrice - itemD.Product.ProductPrice * itemD.Product.ProductDiscount / 100);
-				ItemData itemData = new ItemData(nameD, quantityD, moneyD);
-				listData.Add(itemData);
-			}
+		List<ItemData> listData = new();
+		listData.Add(new ItemData("Vận chuyển", 1, Convert.ToInt32(shippingCost)));
+		foreach (var itemD in listCart)
+		{
+			var nameD = itemD.Product.ProductName;
+			var quantityD = itemD.Quantity;
+			var moneyD = Convert.ToInt32(itemD.Product.ProductPrice - itemD.Product.ProductPrice * itemD.Product.ProductDiscount / 100);
+			listData.Add(new ItemData(nameD, quantityD, moneyD));
+		}
 
-			// clear cart
-			_cartRepo.Set(HttpContext.Session, new List<Item>());
-			var paymentMethod = Convert.ToInt32(form["ChoosePaymentMethod"]);
-			if (paymentMethod == 1)
-				PayOSPayment(listData, or.OrderId);
-			else if (paymentMethod == 0) Response.Redirect("Confirm");
+		_cartRepo.Set(HttpContext.Session, new List<Item>());
+		var paymentMethod = Convert.ToInt32(form["ChoosePaymentMethod"]);
+		if (paymentMethod == 1)
+		{
+			var payUrl = await PayOSPayment(listData, or.OrderId);
+			return Json(new { redirectUrl = payUrl });
+		}
+		else
+		{
+			return Json(new { redirectUrl = Url.Action("Confirm", "Cart") });
 		}
 	}
 
