@@ -71,12 +71,27 @@
 					<td>
 						@Html.DisplayFor(modelItem => item.CustomerAddress)
 					</td>
+			
 					<td>
-						@Html.DisplayFor(modelItem => item.CustomerState)
-					</td>
-					<td>
-						<img width="100" src="~/Content/img/staff/@Html.DisplayFor(modelItem => item.CustomerImage)" alt="@Html.DisplayFor(modelItem => item.CustomerImage)"/>
+							@{
+								// Xác định đường dẫn avatar thực tế:
+								string avatarFile = item.CustomerImage;
+								string avatarUrl;
 
+								if (!String.IsNullOrEmpty(avatarFile))
+								{
+									// Nếu có CustomerImage, dùng ảnh từ folder Staff
+									avatarUrl = Url.Content($"~/Content/img/staff/{avatarFile}");
+								}
+								else
+								{
+									// Nếu không, dùng ảnh mặc định
+									avatarUrl = Url.Content("~/Content/admin/img/admin.jpg");
+								}
+							}
+							<img width="40"
+								 src="@avatarUrl"
+								 class="rounded-circle" />
 					</td>
 					<td>
 						@*<a class="btn btn-warning rounded-pill" asp-action="Edit" asp-route-id="@item.CustomerId"><i class="bi bi-pencil"></i></a>*@
